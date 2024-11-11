@@ -1,0 +1,175 @@
+<div class="popup-mobile-menu">
+        <div class="inner-popup">
+            <div class="header-top">
+                <div class="logo">
+                    <a href="{% url 'index' %}">
+                        <h3 class="theme-gradient">Portdex AI</h3>
+                    </a>
+                </div>
+                <div class="close-menu">
+                    <button class="close-button">
+                        <i class="feather-x"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="content">
+                <ul class="mainmenu">
+                    <li><a href="{% url 'dashboard' %}">Welcome</a></li>
+                    <li class="with-megamenu has-menu-child-item position-relative"><a href="#">Dashboard</a>
+                        <div class="rainbow-megamenu right-align with-mega-item-2">
+                            <div class="wrapper p-0">
+                                <div class="row row--0">
+                                    <div class="col-lg-6 single-mega-item">
+                                        <h3 class="rbt-short-title">DASHBOARD PAGES</h3>
+                                        <ul class="mega-menu-item">
+                                            <li>
+                                                <a href="{% url 'profileDetails' %}">
+                                                    <span>Profile</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'notification' %}">
+                                                    <span>Notification</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'chatExport' %}">
+                                                    <span>Chat Export</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'appearance' %}">
+                                                    <span>Apperance</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'plansBilling' %}">
+                                                    <span>Plans and Billing</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'sessions' %}">
+                                                    <span>Sessions</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'application' %}">
+                                                    <span>Application</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'releaseNotes' %}">
+                                                    <span>Release notes</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'help' %}">
+                                                    <span>Help & FAQs</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-lg-6 single-mega-item">
+                                        <div class="header-menu-img">
+                                            <img src="/static/images/menu-img/menu-img-2.png" alt="Menu Split Image">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li><a href="{% url 'pricing' %}">Pricing</a></li>
+                    <li><a href="{% url 'signin' %}">Sign In</a></li>
+                </ul>
+
+
+
+
+
+
+
+
+                <div class="rbt-sm-separator"></div>
+                <div class="rbt-default-sidebar-wrapper">
+                    <nav class="mainmenu-nav">
+                        <ul class="dashboard-mainmenu rbt-default-sidebar-list">
+                            <li><a href="{% url 'dashboard' %}"><i class="feather-monitor"></i><span>Welcome</span></a></li>
+                        </ul>
+                        <div class="rbt-sm-separator"></div>
+                        <ul class="dashboard-mainmenu rbt-default-sidebar-list">
+                            <li><a href="{% url 'textGenerator' chat_id=chat_id %}"><img src="/static/images/generator-icon/text.png" alt="AI Generator"><span>Text Generator</span></a></li>
+
+                        </ul>
+                    </nav>
+
+                    <div class="rbt-sm-separator"></div>
+
+                    <nav class="mainmenu-nav">
+                        <ul class="dashboard-mainmenu rbt-default-sidebar-list">
+                            <li class="has-submenu"><a class="collapse-btn collapsed" data-bs-toggle="collapse" href="#collapseExampleMenu" role="button" aria-expanded="false" aria-controls="collapseExampleMenu"><i class="feather-plus-circle"></i><span>Setting</span></a>
+                                <div class="collapse" id="collapseExampleMenu">
+                                    <ul class="submenu rbt-default-sidebar-list">
+                                        <li>
+                                            <a href="{% url 'profileDetails' %}">
+                                                <i class="feather-user"></i>
+                                                <span>Profile Details</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'notification' %}">
+                                                <i class="feather-shopping-bag"></i>
+                                                <span>Notification</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'chatExport' %}">
+                                                <i class="feather-users"></i>
+                                                <span>Chat Export</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'appearance' %}">
+                                                <i class="feather-home"></i>
+                                                <span>Apperance</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'plansBilling' %}">
+                                                <i class="feather-briefcase"></i>
+                                                <span>Plans and Billing</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'sessions' %}">
+                                                <i class="feather-users"></i>
+                                                <span>Sessions</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'application' %}">
+                                                <i class="feather-list"></i>
+                                                <span>Application</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li><a href="#"><i class="feather-award"></i><span>Help & FAQ</span></a></li>
+                        </ul>
+                        <div class="rbt-sm-separator"></div>
+                        <ul class="dashboard-mainmenu rbt-default-sidebar-list">
+                            <li><a href="{% url 'releaseNotes' %}"><i class="feather-bell"></i><span>Release notes</span></a></li>
+                            <li><a href="{% url 'termsPolicy' %}"><i class="feather-briefcase"></i><span>Terms & Policy</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Start Header Btn  -->
+            <div class="header-btn d-block d-md-none">
+                <a class="btn-default @@btnClass" target="_blank" href="{% url 'textGenerator' chat_id=chat_id %}">Get Started Free</a>
+            </div>
+            <!-- End Header Btn  -->
+        </div>
+    </div>

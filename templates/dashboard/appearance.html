@@ -1,0 +1,106 @@
+{% extends '../layout/layout1.html' %}
+
+{% block content %}
+
+<!-- Main content -->
+<div class="rbt-main-content mr--0 mb--0">
+    <div class="rbt-daynamic-page-content center-width">
+
+        <!-- Dashboard Center Content -->
+        <div class="rbt-dashboard-content">
+            <div class="banner-area">
+                <!-- PortdexAI small Slider -->
+                <div class="settings-area">
+                    <h3 class="title">Settings</h3>
+                    <ul class="user-nav">
+                        <li>
+                            <a href="{% url 'profileDetails' %}">
+                                <span>Profile Details</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'notification' %}">
+                                <span>Notification</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'chatExport' %}">
+                                <span>Chat Export</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'appearance' %}">
+                                <span>Apperance</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'plansBilling' %}">
+                                <span>Plans and Billing</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'sessions' %}">
+                                <span>Sessions</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'application' %}">
+                                <span>Application</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="content-page pb--50">
+                <div class="chat-box-list">
+                    <!-- PortdexAI Apearance Select -->
+                    <div class="single-settings-box top-flashlight light-xl leftside">
+                        <h4 class="title">Appearance</h4>
+                        <div class="switcher-btn-grp">
+                            <button class="dark-switcher active">
+                                <img src="/static/images/switcher-img/dark.png" alt="Switcher Image">
+                                <span class="text">Dark Mode</span>
+                            </button>
+                            <button class="light-switcher disabled" disabled>
+                                <img src="/static/images/switcher-img/light.png" alt="Switcher Image">
+                                <span class="text">Light Mode</span>
+                                <s class="rainbow-badge-card badge-sm position-top-right">Coming</s>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- PortdexAI Language Select -->
+                    <div class="single-settings-box top-flashlight light-xl leftside">
+                        <h4 class="title">Languages</h4>
+                        <div class="select-area">
+                            <h6 class="text">System Language</h6>
+
+                            <div class="rbt-modern-select bg-transparent height-45">
+                                <select>
+                                    <option data-content="<img class='left-image' src='/static/images/icons/en-us.png' alt='Language Images'> English">English</option>
+                                    <option data-content="<img class='left-image' src='/static/images/icons/fr.png' alt='Language Images'> Spanish">Spanish</option>
+                                    <option data-content="<img class='left-image' src='/static/images/icons/en-us.png' alt='Language Images'> Italiic">Italic</option>
+                                    <option data-content="<img class='left-image' src='/static/images/icons/fr.png' alt='Language Images' > French">French</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="select-area mt--20">
+                            <h6 class="text">Generate Language</h6>
+
+                            <div class="rbt-modern-select bg-transparent height-45">
+                                <select>
+                                    <option data-content="<img class='left-image' src='/static/images/icons/en-us.png' alt='Language Images'> English">English</option>
+                                    <option data-content="<img class='left-image' src='/static/images/icons/fr.png' alt='Language Images'> Spanish">Spanish</option>
+                                    <option data-content="<img class='left-image' src='/static/images/icons/en-us.png' alt='Language Images'> Italiic">Italic</option>
+                                    <option selected data-content="<img class='left-image' src='/static/images/icons/fr.png' alt='Language Images' > French">French</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

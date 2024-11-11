@@ -1,0 +1,133 @@
+<header class="rbt-dashboard-header rainbow-header header-default header-left-align rbt-fluid-header">
+    <div class="container-fluid position-relative">
+        <div class="row align-items-center">
+            <div class="col-lg-2 col-md-6 col-7">
+                <div class="header-left d-flex">
+                    <div class="expand-btn-grp">
+                        <button class="bg-solid-primary popup-dashboardleft-btn"><i class="feather-sidebar left"></i></button>
+                    </div>
+                    <div class="logo">
+                        <a href="{% url 'index' %}">
+                            <h5 class="theme-gradient">Portdex AI</h5>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-10 col-md-6 col-5">
+                <div class="header-right">
+                    <nav class="mainmenu-nav d-none d-lg-block">
+                                <ul class="mainmenu">
+                                    <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                                    <li><a href="{% url 'roadmap' %}">Roadmap</a></li>
+                                    
+                                    <!-- <li><a href="{% url 'signin' %}">Sign In</a></li> -->
+                                </ul>
+                            </nav>
+
+                    <div class="header-btn d-none d-md-block">
+                        <a class="btn-default btn-small round" target="_blank" href="{% url 'plansBilling' %}">Upgrade <i class="feather-zap"></i></a>
+                    </div>
+
+                    <!-- Start Mobile-Menu-Bar -->
+                    <div class="mobile-menu-bar mr--10 ml--10 d-block d-lg-none">
+                        <div class="hamberger">
+                            <button class="hamberger-button">
+                                <i class="feather-menu"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Start Mobile-Menu-Bar -->
+
+                    <!-- Start Tools Area -->
+                    <div class="mainmenu-nav d-none d-lg-block one-menu">
+                        <ul class="mainmenu one-menu-item">
+                            <li class="with-megamenu has-menu-child-item position-relative menu-item-open">
+                                <a class="header-round-btn" href="#">
+                                    <span><i class="feather-grid"></i></span>
+                                </a>
+                                <div class="rainbow-megamenu with-mega-item-2 right-align">
+                                    <div class="wrapper">
+                                        <div class="row row--0">
+                                            <div class="col-lg-4 single-mega-item">
+                                                <div class="genarator-section">
+                                                    <ul class="genarator-card-group full-width-list">
+                                                        <li>
+                                                            <a href="{% url 'financeverify' chat_id=chat_id %}" class="genarator-card bg-flashlight-static center-align">
+                                                                <div class="inner bottom-flashlight">
+                                                                    <div class="left-align">
+                                                                        <div class="img-bar">
+                                                                            <img src="/static/images/generator-icon/text_line.png" alt="AI Generator">
+                                                                        </div>
+                                                                        <h5 class="title">Text Generator</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>               
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- End Tools Area -->
+
+                    <!-- Start admin Area  -->
+                    <div class="account-access rbt-user-wrapper right-align-dropdown">
+                        <div class="rbt-user ml--0">
+                            <a class="admin-img" href="#"><img src="/static/images/team/team-01.png" alt="Admin"></a>
+                        </div>
+                        <div class="rbt-user-menu-list-wrapper">
+                            <div class="inner">
+                                <!-- <div class="rbt-admin-profile">
+                                    <div class="admin-thumbnail">
+                                        <img src="/static/images/team/team-01.png" alt="User Images">
+                                    </div>
+                                    <div class="admin-info">
+                                        <span class="name">Trent Adam</span>
+                                        <a class="rbt-btn-link color-primary" href="{% url 'profileDetails' %}">View
+                                            Profile</a>
+                                    </div>
+                                </div> -->
+                               
+                                <hr class="mt--10 mb--10">
+                                <ul class="user-list-wrapper user-nav">
+                                    <li>
+                                        <a href="#">
+                                            <i class="feather-help-circle"></i>
+                                            <span>Help Center</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'profileDetails' %}">
+                                            <i class="feather-settings"></i>
+                                            <span>Settings</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <hr class="mt--10 mb--10">
+                                <ul class="user-list-wrapper">
+                                    <li>
+                                        <a href="{% url 'signin' %}">
+                                            <i class="feather-log-out"></i>
+                                            <span>Logout</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Start admin Area  -->
+
+                    
+                    <div class="expand-btn-grp {% if toggle == 'true' %}@@display-class{% else %}d-none{% endif %}">
+
+                        <button class="bg-solid-primary popup-dashboardright-btn"><i class="feather-sidebar right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

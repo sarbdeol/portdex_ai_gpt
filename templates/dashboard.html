@@ -1,0 +1,247 @@
+{% extends './layout/layout1.html' %}
+
+{% block content %}
+
+<!-- Main content -->
+<div class="rbt-main-content mr--0">
+    <div class="rbt-daynamic-page-content">
+
+        <!-- Dashboard Center Content -->
+        <div class="rbt-dashboard-content">
+            <div class="banner-area">
+                <!-- PortdexAI small Slider -->
+                <div class="rainbow-slider-section slick-grid-15 rainbow-slick-dot sm-slider-carosel-activation">
+                    <div class="PortdexAI-small-slider slide-single-layout">
+                        <div class="inner bg-one">
+                            <div class="content">
+                                <h4 class="title">Frequently Asked Questions</h4>
+                                <p class="desc">Explore our comprehensive repository</p>
+                            </div>
+                            <div class="img-section">
+                                <img src="/static/images/slider-bg/slider-sm-01.png" alt="sm slider img">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="PortdexAI-small-slider slide-single-layout">
+                        <div class="inner bg-three">
+                            <div class="content">
+                                <h4 class="title">Cognitive Services Hub</h4>
+                                <p class="desc">Immerse yourself in the world of cutting-edge</p>
+                            </div>
+                            <div class="img-section">
+                                <img src="/static/images/slider-bg/slider-sm-03.png" alt="sm slider img">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="PortdexAI-small-slider slide-single-layout">
+                        <div class="inner bg-four">
+                            <div class="content">
+                                <h4 class="title">Best Quantum AI Services</h4>
+                                <p class="desc">Elevate your ventures with our AI Services</p>
+                            </div>
+                            <div class="img-section">
+                                <img src="/static/images/slider-bg/slider-sm-02.png" alt="sm slider img">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-page">
+                <div class="chat-box-list">
+
+                    <div class="welcome-wrapper">
+                        <div class="content-section">
+                            <h4 class="title">👋 Welcome, Sarab</h4>
+                        </div>
+                        <div class="btn-section">
+                            <a class="btn-default bg-solid-primary" data-bs-toggle="modal" data-bs-target="#newchatModal">
+                                <span class="icon"><i class="feather-plus-circle"></i></span>
+                                <span>New Chat</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- PortdexAI Generator -->
+                    <div class="rainbow-generartor-section rainbow-section-gap">
+                        <div class="section-title text-center sal-animate" data-sal="slide-up" data-sal-duration="700" data-sal-delay="100">
+                            <!-- <h4 class="subtitle "><span class="theme-gradient">PortdexAI</span></h4> -->
+                            <h4 class="title w-600 mb--20"><span class="theme-gradient">PortdexAI</span></h4>
+                            <p class="description b1">Empowering Market Insights, Entity Verification, and Product & Service Comparisons through Data Portability</p>
+                        </div>
+                        <div class="genarator-section">
+                            <ul class="genarator-card-group">
+                                <li>
+                                    <a href="{% url 'textGenerator' chat_id=chat_id %}" class="genarator-card" data-category="finance">
+                                        
+                                        <div class="inner">
+                                            <div class="left-align">
+                                                <div class="img-bar">
+                                                    <img src="/static/images/generator-icon/text.png" alt="AI Generator">
+                                                </div>
+                                                <h5 class="title">Financial update/News</h5>
+                                            </div>
+                                            <div class="right-align">
+                                                <div class="icon-bar"><i data-feather="arrow-right"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'textGenerator' chat_id=chat_id %}" class="genarator-card">
+                                        <div class="inner">
+                                            <div class="left-align">
+                                                <div class="img-bar">
+                                                    <img src="/static/images/generator-icon/text.png" alt="AI Generator">
+                                                </div>
+                                                <h5 class="title">Web 3.0 Market Data</h5>
+                                            </div>
+                                            <div class="right-align">
+                                                <div class="icon-bar"><i data-feather="arrow-right"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'textGenerator' chat_id=chat_id %}" class="genarator-card">
+                                        <div class="inner">
+                                            <div class="left-align">
+                                                <div class="img-bar">
+                                                    <img src="/static/images/generator-icon/text.png" alt="AI Generator">
+                                                </div>
+                                                <h5 class="title">Financial Service Data</h5>
+                                            </div>
+                                            <div class="right-align">
+                                                <div class="icon-bar"><i data-feather="arrow-right"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'textGenerator' chat_id=chat_id %}" class="genarator-card">
+                                        <div class="inner">
+                                            <div class="left-align">
+                                                <div class="img-bar">
+                                                    <img src="/static/images/generator-icon/text.png" alt="AI Generator">
+                                                </div>
+                                                <h5 class="title">Compare Financial Products</h5>
+                                            </div>
+                                            <div class="right-align">
+                                                <div class="icon-bar"><i data-feather="arrow-right"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'textGenerator' chat_id=chat_id %}" class="genarator-card">
+                                        <div class="inner">
+                                            <div class="left-align">
+                                                <div class="img-bar">
+                                                    <img src="/static/images/generator-icon/text.png" alt="AI Generator">
+                                                </div>
+                                                <h5 class="title">Financial Advisory & Taxation</h5>
+                                            </div>
+                                            <div class="right-align">
+                                                <div class="icon-bar"><i data-feather="arrow-right"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                
+                                
+                               
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="rbt-static-bar collapse-width">
+                <form class="new-chat-form border-gradient" id="chatForm">
+                    {% csrf_token %}
+                    <textarea id="userMessage" rows="1" placeholder="Send a message..."></textarea>
+                    <div class="left-icons">
+                        <div title="PortdexAI" class="form-icon icon-gpt">
+                            <i class="feather-aperture"></i>
+                        </div>
+                    </div>
+                    <div class="right-icons">
+                        <button type="button" class="form-icon icon-send" id="sendButton" data-bs-toggle="tooltip" data-bs-title="Send message">
+                            <i class="feather-send"></i>
+                        </button>
+                    </div>
+                </form>
+                
+                <script>
+                    document.getElementById("sendButton").onclick = async function(event) {
+                        event.preventDefault();
+                
+                        // Ensure userMessage textarea exists
+                        const messageField = document.getElementById("userMessage");
+                        if (!messageField) {
+                            console.error("Message field not found.");
+                            return;
+                        }
+                
+                        const userMessage = messageField.value.trim();
+                        if (!userMessage) return; // Exit if message is empty
+                
+                        // Generate a new chat ID on the server
+                        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+                        if (!csrfToken) {
+                            console.error("CSRF token not found.");
+                            return;
+                        }
+                
+                        const response = await fetch("{% url 'dashboard' %}", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRFToken": csrfToken.value
+                            },
+                            body: JSON.stringify({ userMessage: userMessage })
+                        });
+                
+                        if (response.ok) {
+                            const data = await response.json();
+                            const newChatId = data.chat_id;
+                
+                            // Redirect to the new chat page with the generated chat_id
+                            window.location.href = `/generator/${newChatId}`;
+                        } else {
+                            console.error("Failed to create a new chat.");
+                        }
+                    };
+                </script>
+                
+                
+                
+                <ul class="staticbar-btn-grp d-none d-md-flex">
+                    <li>
+                        <button class="btn-default btn-small btn-border"><span>Ask Tough Question</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="btn-default btn-small btn-border"><span>Create Image Artwork</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="btn-default btn-small btn-border"><span>Image Editor Options</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="btn-default btn-small btn-border"><span>Give Voice command</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}

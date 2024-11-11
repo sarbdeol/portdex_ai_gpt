@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% include '../partials/head.html' with headTitle=headTitle %}
+
+
+<body>
+    <main class="page-wrapper">
+
+        <!-- Start Header Top Area  -->
+        {% include '../partials/headerTop.html' %}
+        <!-- End Header Top Area  -->
+
+        <div id="my_switcher" class="my_switcher">
+            <ul>
+                <li>
+                    <a href="javascript: void(0);" data-theme="light" class="setColor light">
+                        <img src="/static/images/light/switch/sun-01.svg" alt="Sun images"><span title="Light Mode"> Light</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript: void(0);" data-theme="dark" class="setColor dark">
+                        <img src="/static/images/light/switch/vector.svg" alt="Vector Images"><span title="Dark Mode">
+                            Dark</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- start header -->
+        {% if header == "header" %}
+            {% include '../partials/header.html' with toggle=toggle|default:"false" %}
+        {% elif header == "header2" %}
+            {% include '../partials/header2.html' %}
+        {% elif header == "header3" %}
+            {% include '../partials/header3.html' %}
+        {% elif header == "header5" %}
+            {% include '../partials/header5.html' %}
+        {% else %}
+            {% include '../partials/header4.html' %}
+        {% endif %}
+        <!-- End  header -->
+
+        <!-- start mobilemenu -->
+        {% include '../partials/mobileMenu.html' %}
+        <!-- End  mobilemenu -->
+
+        <!-- start Preloader -->
+        {% include '../partials/preloader.html' %}
+        <!-- End Preloader -->
+
+        {% block content %}
+
+        {% endblock %} 
+
+        <!-- Start Footer Area  -->
+        {% include '../partials/footer.html' %}
+        <!-- End Footer Area  -->
+
+        <!-- Start Copy Right Area  -->
+        {% include '../partials/copyright.html' %}
+        <!-- End Copy Right Area  -->
+
+        <!--back to top -->
+        {% include '../partials/backToTop.html' %}
+
+    </main>
+
+    <!-- start script -->
+    {% include '../partials/script.html' %}
+    <!-- End  script -->
+
+</body>
+
+</html>
