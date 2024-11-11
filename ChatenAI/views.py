@@ -15,7 +15,7 @@ load_dotenv()
 
 # Access the OpenAI API key
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-
+OPENAI_ASSISTANT_ID = os.getenv("OPENAI_ASSISTANT_ID")
 def fetch_crypto_data():
     url = "https://api.coinlore.net/api/tickers/"
     response = requests.get(url)
@@ -162,40 +162,93 @@ def send_message(request, chat_id):
         return JsonResponse({"response": reply})
 
     return JsonResponse({"error": "Only POST method is allowed"}, status=405)
+import logging
+from openai import OpenAI 
+client = OpenAI(api_key=OPENAI_API_KEY) 
 
-def call_openai(message):
+# Assuming `client` is your OpenAI or assistant service client (e.g., OpenAI's API client)
+# You need to initialize this client with your credentials
+
+# Define a function to run the assistant based on the thread
+def run_assistant(thread):
     import datetime
     date = datetime.datetime.now().strftime('%Y-%m-%d')
     crypto_data = fetch_crypto_data()
-    # print(crypto_data)
+#     # print(crypto_data)
     formatted_crypto_data = format_crypto_data_for_openai(crypto_data)
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': f'Bearer {OPENAI_API_KEY}'
-    }
-    data = {
-        "model": "gpt-4o-mini",
-        "messages": [
-        {"role": "system", "content": (
-            "You are the Portdex.ai assistant, a digital expert designed to support users with insights across finance, industry trends, services, company data, cryptocurrencies, financial advisories, tax matters, and legal service providers. "
-            f"\n\nHere is the latest crypto data, including Dogecoin:\n{formatted_crypto_data}\n\nToday’s date is {date}. "
-            "Your primary goal is to offer strategic, data-driven guidance that aligns with Portdex.ai's commitment to delivering actionable intelligence and clarity in decision-making. "
-            "If the user asks about any cryptocurrency listed in the provided data (like Dogecoin), reference this data to give updated information. "
-            "When addressing finance or crypto topics, highlight recent developments, market updates, and practical applications using the most relevant available data. "
-            "For questions outside finance, services, industries, companies, crypto, financial advisories, tax, and legal topics, respond with: 'I can provide only data related to finance, services, industries, companies, crypto, financial advisory, tax, and legal services.' "
-            "Structure all answers in web-ready HTML without code block markers. Use <p> tags for each paragraph, providing practical insights tailored to a business audience. "
-            "Maintain a supportive and positive tone, aligning with Portdex.ai’s mission to empower users with accurate, strategic insights."
-        )},
-        {"role": "user", "content": message}
-    ]
-    }
-    response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=data)
-    # print(response.json())
-    if response.status_code == 200:
-        response_data = response.json()
-        return response_data['choices'][0]['message']['content']
-    else:
-        return "Error: Unable to fetch response."
+    # Retrieve the assistant using its ID
+    assistant = client.beta.assistants.retrieve(OPENAI_ASSISTANT_ID)
+    
+    # Create a new run for the given thread with specific instructions
+    run = client.beta.threads.runs.create(
+        thread_id=thread.id,
+        assistant_id=assistant.id,
+        instructions=( 
+                f"\n\nHere is the latest crypto data, including Dogecoin:\n{formatted_crypto_data}\n\nToday’s date is {date}. "
+                "Structure all answers in web-ready HTML without code block markers. Use <p> tags for each paragraph, and also add links if available. providing practical insights tailored to a business audience. "
+        ), 
+            
+        )
+
+    # Poll for the run status to check when it is completed
+    while run.status != "completed":
+        run = client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id)
+
+    # Fetch the generated message from the thread's messages
+    messages = client.beta.threads.messages.list(thread_id=thread.id)
+    new_message = messages.data[0].content[0].text.value
+    
+    logging.info(f"Generated message: {new_message}")
+    
+    # Return the generated message
+    return new_message
+
+# Function to generate a response based on the message
+def call_openai(message_body): 
+    thread = client.beta.threads.create() 
+    thread_id = thread.id 
+    client.beta.threads.messages.create( 
+        thread_id=thread_id, 
+        role="user", 
+        content=message_body, 
+    ) 
+    new_message = run_assistant(thread) 
+    return new_message
+
+
+# def call_openai(message):
+#     import datetime
+#     date = datetime.datetime.now().strftime('%Y-%m-%d')
+#     crypto_data = fetch_crypto_data()
+#     # print(crypto_data)
+#     formatted_crypto_data = format_crypto_data_for_openai(crypto_data)
+#     headers = {
+#         'Content-Type': 'application/json',
+#         'Authorization': f'Bearer {OPENAI_API_KEY}'
+#     }
+#     data = {
+#         "model": "gpt-4o-mini",
+#         "messages": [
+#         {"role": "system", "content": (
+#             "You are the Portdex.ai assistant, a digital expert designed to support users with insights across finance, industry trends, services, company data, cryptocurrencies, financial advisories, tax matters, and legal service providers. "
+#             f"\n\nHere is the latest crypto data, including Dogecoin:\n{formatted_crypto_data}\n\nToday’s date is {date}. "
+#             "Your primary goal is to offer strategic, data-driven guidance that aligns with Portdex.ai's commitment to delivering actionable intelligence and clarity in decision-making. "
+#             "If the user asks about any cryptocurrency listed in the provided data (like Dogecoin), reference this data to give updated information. "
+#             "When addressing finance or crypto topics, highlight recent developments, market updates, and practical applications using the most relevant available data. "
+#             "For questions outside finance, services, industries, companies, crypto, financial advisories, tax, and legal topics, respond with: 'I can provide only data related to finance, services, industries, companies, crypto, financial advisory, tax, and legal services.' "
+#             "Structure all answers in web-ready HTML without code block markers. Use <p> tags for each paragraph, providing practical insights tailored to a business audience. "
+#             "Maintain a supportive and positive tone, aligning with Portdex.ai’s mission to empower users with accurate, strategic insights."
+#         )},
+#         {"role": "user", "content": message}
+#     ]
+#     }
+#     response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=data)
+#     # print(response.json())
+#     if response.status_code == 200:
+#         response_data = response.json()
+#         return response_data['choices'][0]['message']['content']
+#     else:
+#         return "Error: Unable to fetch response."
     
 
 
