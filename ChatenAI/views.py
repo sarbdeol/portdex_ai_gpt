@@ -8,6 +8,7 @@ from .models import ChatLog
 from dotenv import load_dotenv
 from django.utils.timezone import localtime
 from collections import defaultdict
+from django.core.paginator import Paginator
 import uuid  # To generate unique chat IDs
 
 # Load environment variables from .env file
@@ -41,8 +42,83 @@ def format_crypto_data_for_openai(crypto_data, limit=5):
     return formatted_data
 
 
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
 
 
+def get_rates(coin):
+    # URL of the Ethereum exchanges page
+    url = f'https://coinranking.com/coin/{coin}/exchanges'
+
+    # Send a GET request to the URL
+    response = requests.get(url)
+
+    # Check if the request was successful
+    if response.status_code == 200:
+        # Parse the HTML content
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        # Find the table containing exchange listings
+        table = soup.find('table')
+        
+        # Check if the table exists
+        if table:
+            # Extract table rows
+            rows = table.find('tbody').find_all('tr')
+            
+            # Initialize data storage for first two columns
+            data = []
+            
+            # Iterate over each row
+            for row in rows[:10]:
+                # Extract columns in the current row
+                cols = row.find_all('td')
+                # Get text from the first two columns
+                if len(cols) >= 2:  # Ensure there are at least two columns
+                    col1 = cols[0].get_text(separator=" ", strip=True).replace("\n", "").strip()
+                    col2 = cols[1].get_text(separator=" ", strip=True).replace("\n", "").strip()
+                    data.append([col1, col2])
+            
+            # Create a pandas DataFrame with the data
+            df = pd.DataFrame(data, columns=['Exchanges', 'Price'])
+            
+            # Display the DataFrame
+            print(df)
+            return df
+        else:
+            print('Exchange table not found on the page.')
+            return 'no exchange rate found'
+    else:
+        print(f'Failed to retrieve the page. Status code: {response.status_code}')
+        return 'Failed to retrieve the price'
+def get_coin_name(message_body):
+    # message_body='provide all exchange rates of dogcoin'
+    import requests
+    import json
+
+    url = "https://api.openai.com/v1/chat/completions"
+
+    payload = json.dumps({
+    "model": "gpt-4o-mini",
+    "messages": [
+        {
+        "role": "system",
+        "content": f"Extract cryptocurrency names from the following message in the format 'coinname-symbol':\n\n{message_body}\n\nExample Output:\nbitcoin-btc\nethereum-eth"
+        }
+    ]
+    })
+    headers = {
+    'Content-Type': 'application/json',
+    'Authorization': f'Bearer {OPENAI_API_KEY}'
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    print(response.json()['choices'][0]['message']['content'])
+    coin=response.json()['choices'][0]['message']['content']
+    return coin
+    
 def index(request):
     if 'chat_id' not in request.session:
         request.session['chat_id'] = str(uuid.uuid4())
@@ -170,22 +246,37 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 # You need to initialize this client with your credentials
 
 # Define a function to run the assistant based on the thread
-def run_assistant(thread):
+def run_assistant(thread,message_body):
     import datetime
     date = datetime.datetime.now().strftime('%Y-%m-%d')
-    crypto_data = fetch_crypto_data()
-#     # print(crypto_data)
-    formatted_crypto_data = format_crypto_data_for_openai(crypto_data)
+#     crypto_data = fetch_crypto_data()
+# #     # print(crypto_data)
+#     formatted_crypto_data = format_crypto_data_for_openai(crypto_data)
     # Retrieve the assistant using its ID
     assistant = client.beta.assistants.retrieve(OPENAI_ASSISTANT_ID)
-    
+    if any(keyword in message_body for keyword in ['rate', 'crypto', 'rates', 'price']):
+        
+        coin=get_coin_name(message_body)
+        formatted_crypto_data=get_rates(coin)
+        ins=f"\n\nHere is the latest crypto data:\n{formatted_crypto_data}"
+    else:
+        ins=None
+    assistant = client.beta.assistants.update(
+	assistant_id=assistant.id,
+	# tool_resources={"file_search": {"vector_store_ids": ['vs_3ILDTuF1KoHBko7M3OzA6JCr']}},
+	)
     # Create a new run for the given thread with specific instructions
     run = client.beta.threads.runs.create(
         thread_id=thread.id,
         assistant_id=assistant.id,
+        
         instructions=( 
-                f"\n\nHere is the latest crypto data, including Dogecoin:\n{formatted_crypto_data}\n\nToday’s date is {date}. "
-                "Structure all answers in web-ready HTML without code block markers. Use <p> tags for each paragraph, and also add links if available. providing practical insights tailored to a business audience. "
+                f"{ins}\n\nToday’s date is {date}. "
+                "response Use HTML formatting with `<h4>`, `<h5>`, and `<p>` tags and cards for organized responses.transparant background color and dont include images in response"
+                # "**Cryptocurrency Rates Comparison**"
+                # "When the user requests cryptocurrency rates, present information from no fewer than two sources (preferably three). "
+                # "Compare the rates from these sources and present a brief analysis of any discrepancies or noteworthy changes."
+                # "Clearly mention the names of all the sources and provide clickable HTML links for direct referencing."
         ), 
             
         )
@@ -205,14 +296,22 @@ def run_assistant(thread):
 
 # Function to generate a response based on the message
 def call_openai(message_body): 
-    thread = client.beta.threads.create() 
+    
+    thread = client.beta.threads.create(
+        tool_resources={
+			"file_search": {
+			"vector_store_ids": ["vs_3ILDTuF1KoHBko7M3OzA6JCr"]
+			}
+		}
+	) 
     thread_id = thread.id 
     client.beta.threads.messages.create( 
         thread_id=thread_id, 
         role="user", 
         content=message_body, 
+        
     ) 
-    new_message = run_assistant(thread) 
+    new_message = run_assistant(thread,message_body) 
     return new_message
 
 
@@ -264,3 +363,96 @@ def load_chat(request, chat_id):
         'chat_id': chat_id,
         'chat_history': chat_history,
     })
+
+
+
+def product_list(request):
+    # Fetch data from the external API
+    response = requests.get("https://walluk.s3.eu-north-1.amazonaws.com/themes/themes%26plugins.json")
+    if response.status_code == 200:
+        products = response.json()  # Assuming the API returns a JSON array of themes/plugins
+    else:
+        products = []
+
+    # Filter by category if selected
+    selected_category = request.GET.get('category', '')
+    if selected_category:
+        products = [product for product in products if product.get("category") == selected_category]
+
+    # Implement pagination, 10 items per page
+    paginator = Paginator(products, 30)
+    page_number = request.GET.get('page')
+    products_page = paginator.get_page(page_number)
+
+    # Extract distinct categories for the filter dropdown
+    categories = list({product.get("category") for product in products if product.get("category")})
+
+    context = {
+        'products': products_page,
+        'categories': categories,
+        'selected_category': selected_category,
+        'chat_id': str(uuid.uuid4()),
+    }
+
+    return render(request, 'products.html', context)
+
+
+
+
+def freelancers_list(request):
+    # Fetch data from the API
+    response = requests.get("https://walluk.s3.eu-north-1.amazonaws.com/freelancers/freelancer_data.json")  # Replace with the actual API URL
+    if response.status_code == 200:
+        freelancers = response.json()
+    else:
+        freelancers = []
+
+    # Get the selected category from the request
+    selected_category = request.GET.get('category', '')
+
+    # Filter freelancers by the selected category
+    if selected_category:
+        freelancers = [freelancer for freelancer in freelancers if freelancer.get("category") == selected_category]
+
+    # Extract unique categories for filtering
+    categories = list(set(freelancer["category"] for freelancer in freelancers if "category" in freelancer))
+
+    context = {
+        'freelancers': freelancers,
+        'categories': categories,
+        'selected_category': selected_category,
+        'chat_id': str(uuid.uuid4()),
+    }
+
+    return render(request, 'developers.html', context)
+
+
+
+def ai_repositories(request):
+    # Fetch JSON data from the API
+    finance_json_url = 'https://walluk.s3.amazonaws.com/gitrepos/finance_repo.json'
+    education_json_url = 'https://walluk.s3.amazonaws.com/gitrepos/education_ai_repo.json'
+
+    # Determine category from request
+    selected_category = request.GET.get('category', 'finance')  # Default is 'finance'
+
+    # Fetch the appropriate JSON data based on the selected category
+    if selected_category == 'education':
+        response = requests.get(education_json_url)
+    else:
+        response = requests.get(finance_json_url)
+
+    repos_data = json.loads(response.text)
+
+    # Optionally, filter by programming languages/types (if requested)
+    selected_type = request.GET.get('type', None)
+    if selected_type:
+        repos_data = [repo for repo in repos_data if selected_type.lower() in [tag.lower() for tag in repo.get('topics', [])]]
+
+    context = {
+        'repos': repos_data,
+        'selected_type': selected_type,
+        'selected_category': selected_category,
+        'chat_id': str(uuid.uuid4()),
+    }
+    return render(request, 'finance_repo.html', context)

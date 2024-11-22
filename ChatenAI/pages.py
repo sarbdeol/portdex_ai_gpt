@@ -17,7 +17,13 @@ def privacyPolicy(request):
     return render(request, "pages/privacyPolicy.html")
     
 def roadmap(request):
-    return render(request, "pages/roadmap.html",{'headTitle' : 'Roadmap','title' : 'Roadmap','subTitle' : 'Roadmap','header' : 'header3'})
+    if 'chat_id' not in request.session:
+        request.session['chat_id'] = str(uuid.uuid4())
+    return render(request, 'pages/roadmap.html', {
+        'chat_id': str(uuid.uuid4()),
+        'headTitle' : 'Roadmap','title' : 'Roadmap','subTitle' : 'Roadmap','header' : 'Roadmap'
+    })
+    # return render(request, "pages/roadmap.html",{'headTitle' : 'Roadmap','title' : 'Roadmap','subTitle' : 'Roadmap','header' : 'header3'})
     
 def signin(request):
     return render(request, "pages/signin.html", {'headTitle' : 'Log In','header' : 'header5'})

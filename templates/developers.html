@@ -1,0 +1,229 @@
+{% extends 'layout/layout1.html' %}
+
+{% block content %}
+<div class="rbt-main-content">
+    <div class="rbt-daynamic-page-content">
+        <!-- Sidebar for Categories -->
+        
+        <!-- Product Page Content -->
+        <div class="rbt-product-content">
+            <div class="content-page">
+
+                <div class="row">
+        
+                    <!-- Main Content for Freelancer Profiles -->
+                    <div class="col-md-9">
+                        <h2 class="mb-4">Top Freelancers</h2>
+                        
+                        <!-- Sort and Results Count -->
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span>Showing 1-20 of {{ freelancers|length }} results</span>
+                            <div>
+                                <label for="sortBy" class="me-2">Sort by</label>
+                                <select id="sortBy" class="form-select form-select-sm">
+                                    <option>Most Relevant</option>
+                                    <option>Highest Rated</option>
+                                    <option>Lowest Price</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="list-group">
+                            {% for freelancer in freelancers %}
+                                <div class="list-group-item mb-3 p-3" style="background-color: #1c1c1e; border-radius: 8px; color: #eaeaea;">
+                                    <div class="d-flex">
+                                        
+                                        <!-- Profile Image -->
+                                        <img src="{{ freelancer.img }}" alt="{{ freelancer.profile }}" class="me-3 rounded-circle" style="width: 70px; height: 70px; object-fit: cover;" onerror="this.style.display='none'">
+                                        
+                                        <!-- Freelancer Information -->
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h5 class="mb-1 text-white">{{ freelancer.profile }} </h5>
+                                                <span class="fw-bold text-success">{{ freelancer.hour_p_week }}</span>
+                                            </div>
+                                            
+                                            <!-- Rating, Location, and Skills -->
+                                            <div class="mb-1">
+                                                <span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9734;</span> 4.5 &bull; <span class="text-muted">{{ freelancer.location }}</span>
+                                            </div>
+                                            
+                                            <!-- About Section -->
+                                            <p class="mb-1" style="font-size: 0.9rem;">{{ freelancer.about|truncatewords:25 }}</p>
+                                            
+                                            <!-- Skills -->
+                                            <div class="text-muted" style="font-size: 0.85rem;">
+                                                {% for skill in freelancer.skills %}
+                                                    <span>{{ skill }}</span>{% if not forloop.last %} &bull; {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Action Buttons -->
+                                        <!-- <div class="d-flex flex-column justify-content-center">
+                                            <button class="btn btn-outline-primary mb-2 btn-sm">Invite to Bid</button>
+                                            <button class="btn btn-primary btn-sm">Contact</button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagination-section mt-3">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <!-- Previous button -->
+                        {% if products.has_previous %}
+                            <li class="page-item">
+                                <a class="btn-default bg-solid-primary" href="?page={{ freelancers.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}">Previous</a>
+                            </li>
+                        {% endif %}
+
+                        <!-- First page -->
+                        {% if freelancers.paginator.num_pages > 1 %}
+                            <li class="page-item {% if freelancers.number == 1 %}active{% endif %}">
+                                <a class="btn-default bg-solid-primary" href="?page=1{% if selected_category %}&category={{ selected_category }}{% endif %}">1</a>
+                            </li>
+                        {% endif %}
+
+                        <!-- Ellipsis if needed before the middle pages -->
+                        {% if freelancers.number > 3 %}
+                            <li class="page-item disabled"><span class="btn-default bg-solid-primary">...</span></li>
+                        {% endif %}
+
+                        <!-- Display pages around the current page -->
+                        {% for page_num in freelancers.paginator.page_range %}
+                            {% if page_num > 1 and page_num < freelancers.paginator.num_pages %}
+                                {% if page_num >= freelancers.number|add:-1 and page_num <= freelancers.number|add:1 %}
+                                    <li class="page-item {% if freelancers.number == page_num %}active{% endif %}">
+                                        <a class="btn-default bg-solid-primary" href="?page={{ page_num }}{% if selected_category %}&category={{ selected_category }}{% endif %}">{{ page_num }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+
+                        <!-- Ellipsis if needed after the middle pages -->
+                        {% if freelancers.number < freelancers.paginator.num_pages|add:-2 %}
+                            <li class="page-item disabled"><span class="btn-default bg-solid-primary">...</span></li>
+                        {% endif %}
+
+                        <!-- Last page -->
+                        {% if freelancers.paginator.num_pages > 1 %}
+                            <li class="page-item {% if freelancers.number == freelancers.paginator.num_pages %}active{% endif %}">
+                                <a class="btn-default bg-solid-primary" href="?page={{ freelancers.paginator.num_pages }}{% if selected_category %}&category={{ selected_category }}{% endif %}">{{ freelancers.paginator.num_pages }}</a>
+                            </li>
+                        {% endif %}
+
+                        <!-- Next button -->
+                        {% if freelancers.has_next %}
+                            <li class="page-item">
+                                <a class="btn-default bg-solid-primary" href="?page={{ freelancers.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}">Next</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        
+    </div>
+
+
+    <div class="rbt-right-side-panel popup-dashboardright-section">
+
+        <div class="right-side-top">
+            <a class="btn-default bg-solid-primary" data-bs-toggle="modal" data-bs-target="#newchatModal">
+                <span class="icon"><i class="feather-plus-circle"></i></span>
+                <span>New Chat</span>
+            </a>
+        </div>
+        <div class="right-side-bottom">
+            <!-- <div class="small-search search-section mb--20">
+                <input type="search" placeholder="Search Here...">
+                <i class="feather-search"></i>
+            </div> -->
+
+            <div class="chat-history-section">
+                <!-- <h6 class="title">Chat History</h6> -->
+                <ul class="chat-history-list">
+                    <p>All Category</p>
+                    <!-- Individual Categories -->
+                    {% for category in categories %}
+                    <li class="history-box">
+                        <a href="?category={{ category }}" class="text-decoration-none {% if category == selected_category %}active{% endif %}">
+                            {{ category }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                                    
+                </ul>
+            </div>
+            
+            
+            
+        </div>
+    </div>
+</div>
+
+<!-- Optional Styling -->
+<style>
+ 
+    .list-group-item {
+        background-color: #1c1c1e;
+        border: none;
+    }
+    .list-group-item h5 {
+        font-size: 1.2rem;
+    }
+    .text-warning {
+        color: #ffc107 !important;
+    }
+    .text-success {
+        color: #28a745 !important;
+    }
+    .btn-outline-primary {
+        color: #007bff;
+        border-color: #007bff;
+    }
+    .btn-outline-primary:hover {
+        color: #fff;
+        background-color: #007bff;
+    }
+    .pagination-section {
+        margin-top: 15px;
+    }
+    .pagination-section .pagination {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+    .pagination-section .page-item {
+        margin: 0 5px;
+    }
+    .pagination-section .page-link {
+        color: #007bff;
+        font-weight: bold;
+        border: 1px solid #ddd;
+        padding: 8px 12px;
+        border-radius: 5px;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .pagination-section .page-link:hover {
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+    }
+    .pagination-section .page-item.active .page-link {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+    .pagination-section .page-item.disabled .page-link {
+        color: #6c757d;
+        pointer-events: none;
+        background-color: transparent;
+        border: none;
+    }
+</style>
+{% endblock %}

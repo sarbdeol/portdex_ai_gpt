@@ -1,0 +1,266 @@
+{% extends './layout/layout1.html' %}
+
+{% block content %}
+
+<!-- Main content -->
+<div class="rbt-main-content">
+    <div class="rbt-daynamic-page-content">
+        <!-- Sidebar for Categories -->
+        
+        <!-- Product Page Content -->
+        <div class="rbt-product-content">
+            <div class="content-page">
+
+                <!-- Category Filters -->
+                <div class="filter-section mb-3">
+                    <form method="GET" id="filterForm">
+                        <label for="category">Filter by Category:</label>
+                        <select name="category" id="category" onchange="document.getElementById('filterForm').submit();">
+                            <option value="">All Categories</option>
+                            {% for category in categories %}
+                                <option value="{{ category }}" {% if category == selected_category %}selected{% endif %}>{{ category }}</option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </div>
+
+                <!-- Product Cards -->
+                <div class="row g-3" id="productContainer"> <!-- Compact spacing with g-3 -->
+                    {% if products %}
+                        {% for product in products %}
+                            {% if product.images and product.images.0 %}
+                                <div class="col-md-4">
+                                    <div class="card h-100">
+                                        <div class="card-img-container">
+                                            <img src="{{ product.images.0 }}" class="card-img-top img-first" alt="{{ product.title }}">
+                                            <img src="{{ product.images.1 }}" class="card-img-top img-second" alt="{{ product.title }}">
+                                        </div>
+                                        
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ product.title }}</h5>
+                                            <p class="card-text">{{ product.author }}</p>
+                                            <p class="card-text">{{ product.description|truncatewords:15 }}</p>
+                                            <p class="card-price"><strong>Price:</strong> {{ product.price }}</p>
+                                            <a href="{{ product.url }}" class="btn btn-primary btn-sm">View Details</a>
+                                        </div>
+                                        <div class="card-footer">
+                                            <small class="text-muted">Updated: {{ product.last_update }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <p>No products available in this category.</p>
+                    {% endif %}
+                </div>
+
+                <!-- Pagination -->
+                <!-- Pagination -->
+                <!-- Pagination -->
+                <div class="pagination-section mt-3">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            <!-- Previous button -->
+                            {% if products.has_previous %}
+                                <li class="page-item">
+                                    <a class="btn-default bg-solid-primary" href="?page={{ products.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}">Previous</a>
+                                </li>
+                            {% endif %}
+
+                            <!-- First page -->
+                            {% if products.paginator.num_pages > 1 %}
+                                <li class="page-item {% if products.number == 1 %}active{% endif %}">
+                                    <a class="btn-default bg-solid-primary" href="?page=1{% if selected_category %}&category={{ selected_category }}{% endif %}">1</a>
+                                </li>
+                            {% endif %}
+
+                            <!-- Ellipsis if needed before the middle pages -->
+                            {% if products.number > 3 %}
+                                <li class="page-item disabled"><span class="btn-default bg-solid-primary">...</span></li>
+                            {% endif %}
+
+                            <!-- Display pages around the current page -->
+                            {% for page_num in products.paginator.page_range %}
+                                {% if page_num > 1 and page_num < products.paginator.num_pages %}
+                                    {% if page_num >= products.number|add:-1 and page_num <= products.number|add:1 %}
+                                        <li class="page-item {% if products.number == page_num %}active{% endif %}">
+                                            <a class="btn-default bg-solid-primary" href="?page={{ page_num }}{% if selected_category %}&category={{ selected_category }}{% endif %}">{{ page_num }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+
+                            <!-- Ellipsis if needed after the middle pages -->
+                            {% if products.number < products.paginator.num_pages|add:-2 %}
+                                <li class="page-item disabled"><span class="btn-default bg-solid-primary">...</span></li>
+                            {% endif %}
+
+                            <!-- Last page -->
+                            {% if products.paginator.num_pages > 1 %}
+                                <li class="page-item {% if products.number == products.paginator.num_pages %}active{% endif %}">
+                                    <a class="btn-default bg-solid-primary" href="?page={{ products.paginator.num_pages }}{% if selected_category %}&category={{ selected_category }}{% endif %}">{{ products.paginator.num_pages }}</a>
+                                </li>
+                            {% endif %}
+
+                            <!-- Next button -->
+                            {% if products.has_next %}
+                                <li class="page-item">
+                                    <a class="btn-default bg-solid-primary" href="?page={{ products.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}">Next</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+
+
+            </div>
+        </div>
+        <!-- Dashboard Right Content -->
+        <div class="rbt-right-side-panel popup-dashboardright-section">
+
+            <div class="right-side-top">
+                <a class="btn-default bg-solid-primary" data-bs-toggle="modal" data-bs-target="#newchatModal">
+                    <span class="icon"><i class="feather-plus-circle"></i></span>
+                    <span>New Chat</span>
+                </a>
+            </div>
+            <div class="right-side-bottom">
+                <!-- <div class="small-search search-section mb--20">
+                    <input type="search" placeholder="Search Here...">
+                    <i class="feather-search"></i>
+                </div> -->
+
+                <div class="chat-history-section">
+                    <!-- <h6 class="title">Chat History</h6> -->
+                    <ul class="chat-history-list">
+                        <p>All Category</p>
+                        <!-- Individual Categories -->
+                        {% for category in categories %}
+                        <li class="history-box">
+                            <a href="?category={{ category }}" class="text-decoration-none {% if category == selected_category %}active{% endif %}">
+                                {{ category }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                                        
+                    </ul>
+                </div>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+    .rbt-product-content {
+        padding-top: 20px; /* Compact padding */
+    }
+    .card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    .card-img-container {
+        height: 160px; /* Compact image height */
+        overflow: hidden;
+    }
+    .card-img-container {
+        position: relative;
+    }
+
+    .img-second {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .card-img-container:hover .img-second {
+        opacity: 1;
+    }
+
+    .card-img-container:hover .img-first {
+        opacity: 0;
+    }
+    .card-img-top {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .card-body {
+        flex: 1;
+        padding: 15px; /* Balanced padding for better readability */
+        text-align: center;
+    }
+    .card-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 8px;
+    }
+    .card-text {
+        font-size: 1rem;
+        color: #555;
+        margin-bottom: 12px;
+    }
+    .card-price {
+        font-size: 1rem;
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+    .btn-primary {
+        font-size: 0.9rem;
+    }
+    .card-footer {
+        font-size: 0.85rem;
+        color: #6c757d;
+        background-color: #f8f9fa;
+        padding: 5px 10px;
+    }
+    .pagination-section {
+        margin-top: 15px;
+    }
+    .pagination-section .pagination {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+    .pagination-section .page-item {
+        margin: 0 5px;
+    }
+    .pagination-section .page-link {
+        color: #007bff;
+        font-weight: bold;
+        border: 1px solid #ddd;
+        padding: 8px 12px;
+        border-radius: 5px;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .pagination-section .page-link:hover {
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+    }
+    .pagination-section .page-item.active .page-link {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+    .pagination-section .page-item.disabled .page-link {
+        color: #6c757d;
+        pointer-events: none;
+        background-color: transparent;
+        border: none;
+    }
+</style>
+
+{% endblock content %}

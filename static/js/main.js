@@ -870,6 +870,10 @@
     // Exit if there's no message and no files
     if (!userMessage && files.length === 0) return;
 
+    // Clear text area and file input immediately after retrieving values
+    txtarea.value = "";
+    fileInput.value = "";
+
     // Display the user message if it exists
     let combinedMessage = userMessage;
     if (userMessage) {
@@ -881,7 +885,7 @@
         );
         appendMessage(userMessageElement);
     }
-
+   
     // Display each file name in the chat and read the content to include in the combined message
     if (files.length > 0) {
         for (const file of files) {
@@ -930,8 +934,7 @@
     }
 
     // Clear text area and file input after sending the message
-    txtarea.value = "";
-    fileInput.value = "";
+   
 }
 
 
@@ -1092,6 +1095,7 @@
     txtarea.addEventListener("keydown", function (e) {
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
+        
         sendMessage();
       }
     });

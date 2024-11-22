@@ -14,142 +14,14 @@
                         <nav class="mainmenu-nav d-none d-lg-block">
                             <ul class="mainmenu">
                                 <li><a href="{% url 'dashboard' %}">Welcome</a></li>
-                                <li class="with-megamenu has-menu-child-item position-relative"><a href="#">Pages</a>
-                                    <div class="rainbow-megamenu right-align with-mega-item-2 small">
-                                        <div class="wrapper p-0">
-                                            <div class="row row--0">
-                                                <div class="col-lg-12 single-mega-item">
-                                                    <h3 class="rbt-short-title">Inner Pages</h3>
-                                                    <ul class="mega-menu-item">
-                                                        <li>
-                                                            <a href="{% url 'styleGuide' %}">
-                                                                <span>Style Guide</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="{% url 'blog' %}">
-                                                                <span>Blog</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="{% url 'blogDetails' %}">
-                                                                <span>Blog Details</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="{% url 'pricing' %}">
-                                                                <span>Pricing</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="{% url 'contact' %}">
-                                                                <span>Contact</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="{% url 'signin' %}">
-                                                                <span>Sign In</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="{% url 'signup' %}">
-                                                                <span>Sign Up</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="{% url 'team' %}">
-                                                                <span>Team</span>
-                                                            </a>
-                                                        </li>
-                                                        <li><a href="{% url 'roadmap' %}">Roadmap</a></li>
-                                                        <li><a href="{% url 'utilize' %}">How to use</a></li>
-                                                        <li>
-                                                            <a href="{% url 'termsPolicy' %}">
-                                                                <span>Terms & Policy</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="{% url 'privacyPolicy' %}">
-                                                                <span>Privacy Policy</span>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="with-megamenu has-menu-child-item position-relative"><a href="#">Dashboard</a>
-                                    <div class="rainbow-megamenu right-align with-mega-item-2">
-                                        <div class="wrapper p-0">
-                                            <div class="row row--0">
-                                                <div class="col-lg-6 single-mega-item">
-                                                    <h3 class="rbt-short-title">DASHBOARD PAGES</h3>
-                                                    <ul class="mega-menu-item">
-                                                        <li>
-                                                            <a href="{% url 'profileDetails' %}">
-                                                                <span>Profile</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="{% url 'notification' %}">
-                                                                <span>Notification</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="{% url 'chatExport' %}">
-                                                                <span>Chat Export</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="{% url 'appearance' %}">
-                                                                <span>Apperance</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="{% url 'plansBilling' %}">
-                                                                <span>Plans and Billing</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="{% url 'sessions' %}">
-                                                                <span>Sessions</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="{% url 'application' %}">
-                                                                <span>Application</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="{% url 'releaseNotes' %}">
-                                                                <span>Release notes</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="{% url 'help' %}">
-                                                                <span>Help & FAQs</span>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="col-lg-6 single-mega-item">
-                                                    <div class="header-menu-img">
-                                                        <img src="/static/images/menu-img/menu-img-2.png" alt="Menu Split Image">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li><a href="{% url 'pricing' %}">Pricing</a></li>
-                                <li><a href="{% url 'signin' %}">Sign In</a></li>
+                                
+                            
                             </ul>
                         </nav>
 
                         <!-- Start Header Btn  -->
                         <div class="header-btn">
-                            <a class="btn-default rainbow-gradient-btn" target="_blank" href="{% url 'textGenerator' %}">Get Started
+                            <a class="btn-default rainbow-gradient-btn" target="_blank" href="{% url 'textGenerator' chat_id=chat_id %}">Get Started
                                 Free</a>
                         </div>
                         <!-- End Header Btn  -->
@@ -168,7 +40,7 @@
                                                     <div class="genarator-section">
                                                         <ul class="genarator-card-group full-width-list">
                                                             <li>
-                                                                <a href="{% url 'textGenerator' %}" class="genarator-card bg-flashlight-static center-align">
+                                                                <a href="{% url 'textGenerator' chat_id=chat_id %}" class="genarator-card bg-flashlight-static center-align">
                                                                     <div class="inner bottom-flashlight">
                                                                         <div class="left-align">
                                                                             <div class="img-bar">
@@ -249,7 +121,7 @@
                                                                 </a>
                                                             </li>
                                                             <li>
-                                                                <a href="{% url 'textGenerator' %}" class="genarator-card center-align bg-flashlight-static">
+                                                                <a href="{% url 'textGenerator' chat_id=chat_id %}" class="genarator-card center-align bg-flashlight-static">
                                                                     <div class="inner bottom-flashlight">
                                                                         <div class="left-align">
                                                                             <div class="img-bar">
@@ -305,7 +177,7 @@
                                                                 </a>
                                                             </li>
                                                             <li>
-                                                                <a href="{% url 'textGenerator' %}" class="genarator-card center-align bg-flashlight-static">
+                                                                <a href="{% url 'textGenerator' chat_id=chat_id %}" class="genarator-card center-align bg-flashlight-static">
                                                                     <div class="inner bottom-flashlight">
                                                                         <div class="left-align">
                                                                             <div class="img-bar">
@@ -317,7 +189,7 @@
                                                                 </a>
                                                             </li>
                                                             <li>
-                                                                <a href="{% url 'textGenerator' %}" class="genarator-card center-align bg-flashlight-static disabled center-align" tabindex="-1">
+                                                                <a href="{% url 'textGenerator' chat_id=chat_id %}" class="genarator-card center-align bg-flashlight-static disabled center-align" tabindex="-1">
                                                                     <div class="inner bottom-flashlight">
                                                                         <div class="left-align">
                                                                             <div class="img-bar">
