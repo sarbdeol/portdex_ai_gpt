@@ -40,8 +40,9 @@
                                             <h5 class="card-title">{{ product.title }}</h5>
                                             <p class="card-text">{{ product.author }}</p>
                                             <p class="card-text">{{ product.description|truncatewords:15 }}</p>
+                                            
                                             <p class="card-price"><strong>Price:</strong> {{ product.price }}</p>
-                                            <a href="{{ product.url }}" class="btn btn-primary btn-sm">View Details</a>
+                                            <a href="{{ product.url }}" class="btn btn-primary btn-sm" style="background: linear-gradient(94deg, #dd00ac 10.66%, #7130c3 53.03%, #410093 96.34%, rgba(255, 0, 238, 0.26) 191.41%, rgba(255, 59, 212, 0) 191.43%);">View Details</a>
                                         </div>
                                         <div class="card-footer">
                                             <small class="text-muted">Updated: {{ product.last_update }}</small>
@@ -147,7 +148,21 @@
                     </ul>
                 </div>
                 
-                
+                <div class="right-side-bottom">
+                    <div class="chat-history-section">
+                        <p>All Sellers</p>
+                        <ul class="chat-history-list">
+                            <!-- Loop through authors -->
+                            {% for author in authors %}
+                            <li class="history-box">
+                                <a href="?author={{ author }}" class="text-decoration-none {% if author == selected_author %}active{% endif %}">
+                                    {{ author }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
                 
             </div>
         </div>
@@ -156,6 +171,10 @@
 
 <!-- Custom Styles -->
 <style>
+    .chat-history-list .active {
+        font-weight: bold;
+        color: #007bff;
+    }
     .rbt-product-content {
         padding-top: 20px; /* Compact padding */
     }
@@ -166,6 +185,7 @@
         border: 1px solid #ddd;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         overflow: hidden;
+        background-color: #ffffff !important;
     }
     .card-img-container {
         height: 160px; /* Compact image height */
@@ -222,9 +242,12 @@
     }
     .card-footer {
         font-size: 0.85rem;
-        color: #6c757d;
-        background-color: #f8f9fa;
+        color: #ffffff !important;
+        background: linear-gradient(94deg, #dd00ac 10.66%, #7130c3 53.03%, #410093 96.34%, rgba(255, 0, 238, 0.26) 191.41%, rgba(255, 59, 212, 0) 191.43%);
         padding: 5px 10px;
+    }
+    .text-muted {
+        color: #ffffff !important;
     }
     .pagination-section {
         margin-top: 15px;

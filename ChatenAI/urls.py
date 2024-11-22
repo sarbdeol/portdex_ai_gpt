@@ -30,6 +30,7 @@ urlpatterns = [
     path('products', views.product_list, name = 'products'),
     path('developers/', views.freelancers_list, name='developers'),
     path('ai-repositories/', views.ai_repositories, name='ai-repositories'),
+    path('ai-developers/', views.ai_developers, name='ai-developers'),
 
 
     # Dashboard routes

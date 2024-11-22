@@ -104,7 +104,7 @@ def get_coin_name(message_body):
     "messages": [
         {
         "role": "system",
-        "content": f"Extract cryptocurrency names from the following message in the format 'coinname-symbol':\n\n{message_body}\n\nExample Output:\nbitcoin-btc\nethereum-eth"
+        "content": f"Extract cryptocurrency names from the following message in the format 'coinname-symbol':\n\n{message_body}\n\nExample Output:\nbitcoin-btc\nethereum-eth\nsolana-sol"
         }
     ]
     })
@@ -272,8 +272,8 @@ def run_assistant(thread,message_body):
         
         instructions=( 
                 f"{ins}\n\nToday’s date is {date}. "
-                "response Use HTML formatting with `<h4>`, `<h5>`, and `<p>` tags and cards for organized responses.transparant background color and dont include images in response"
-                # "**Cryptocurrency Rates Comparison**"
+                "response Use HTML formatting like chatbot response with `<h4>`, `<h5>`, and `<p>` tags and cards for organized responses.transparant background color and dont include images in response"
+                "Dont mention this *Based on the information from the uploaded files*"
                 # "When the user requests cryptocurrency rates, present information from no fewer than two sources (preferably three). "
                 # "Compare the rates from these sources and present a brief analysis of any discrepancies or noteworthy changes."
                 # "Clearly mention the names of all the sources and provide clickable HTML links for direct referencing."
@@ -378,6 +378,10 @@ def product_list(request):
     selected_category = request.GET.get('category', '')
     if selected_category:
         products = [product for product in products if product.get("category") == selected_category]
+    
+    selected_author = request.GET.get('author', '')
+    if selected_author:
+        products = [product for product in products if product.get("author") == selected_author]
 
     # Implement pagination, 10 items per page
     paginator = Paginator(products, 30)
@@ -387,10 +391,14 @@ def product_list(request):
     # Extract distinct categories for the filter dropdown
     categories = list({product.get("category") for product in products if product.get("category")})
 
+    sellers = list({product.get("author").replace('-',' ').title() for product in products if product.get("author")})
+
     context = {
         'products': products_page,
         'categories': categories,
         'selected_category': selected_category,
+        'authors': sellers,
+        'selected_author': selected_author,
         'chat_id': str(uuid.uuid4()),
     }
 
@@ -456,3 +464,23 @@ def ai_repositories(request):
         'chat_id': str(uuid.uuid4()),
     }
     return render(request, 'finance_repo.html', context)
+
+
+def ai_developers(request):
+    # S3 URL with developer data
+    s3_url = "https://walluk.s3.eu-north-1.amazonaws.com/freelancers/ai-developers.json"
+
+    try:
+        # Fetch the developer data from S3
+        response = requests.get(s3_url)
+        response.raise_for_status()
+        developers_data = response.json()  # Parse JSON from the response
+    except requests.exceptions.RequestException as e:
+        developers_data = []  # Fallback if the S3 request fails
+        print(f"Error fetching data from S3: {e}")
+    # Paginate the developers data (20 items per page)
+    paginator = Paginator(developers_data, 20)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    # Pass developers data to the template
+    return render(request, 'ai_developers.html', {'developers': developers_data,'chat_id': str(uuid.uuid4()),'page_obj':page_obj})

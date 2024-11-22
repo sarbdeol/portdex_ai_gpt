@@ -1,0 +1,125 @@
+{% extends 'layout/layout1.html' %}
+
+{% block content %}
+<div class="rbt-main-content" style="display: block;">
+    <div class="rbt-daynamic-page-content">
+        <div class="rbt-product-content">
+            <div class="content-page">
+                <h2 class="mb-4">AI Developers</h2>
+
+                <!-- Developer Profiles -->
+                <div class="list-group">
+                    {% for dev in page_obj %}
+                        <div class="list-group-item mb-3 p-3" style="background-color: #1c1c1e; border-radius: 8px; color: #eaeaea;">
+                            <div class="d-flex">
+                                
+                                <!-- Profile Picture -->
+                                <img src="{{ dev.details.profile_picture }}" alt="{{ dev.details.username }}" 
+                                     class="me-3 rounded-circle" style="width: 70px; height: 70px; object-fit: cover;" 
+                                     onerror="this.style.display='none'">
+
+                                <!-- Developer Information -->
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-1 text-white">{{ dev.details.name|default:dev.details.username }}</h5>
+                                        <span class="fw-bold text-success">{{ dev.details.followers }} Followers</span>
+                                    </div>
+                                    
+                                    <!-- Bio and Repository -->
+                                    <p class="mb-1" style="font-size: 1.2rem;">{{ dev.details.bio|default:"AI Developer" }}</p>
+                                    <p class="text-muted mb-2" style="font-size: 1.1rem;">Repository: {{ dev.repository }}</p>
+
+                                    <!-- External Links -->
+                                    <div class="text-muted mb-2" style="font-size: 1.1rem;">
+                                        {% if dev.details.linkedin %}
+                                            <a href="{{ dev.details.linkedin }}" class="text-decoration-none me-3" target="_blank">
+                                                {% if "x.com" in dev.details.linkedin %}
+                                                    Twitter
+                                                {% elif "linkedin.com" in dev.details.linkedin %}
+                                                    LinkedIn
+                                                {% else %}
+                                                    Profile
+                                                {% endif %}
+                                            </a>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- View Profile Button -->
+                                    <a href="{{ dev.contributor_profile }}" class="btn btn-primary btn-sm" target="_blank" style="background: linear-gradient(94deg, #dd00ac 10.66%, #7130c3 53.03%, #410093 96.34%, rgba(255, 0, 238, 0.26) 191.41%, rgba(255, 59, 212, 0) 191.43%);">
+                                        View Profile
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Pagination Controls -->
+                <div class="pagination-section mt-3">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="btn-default bg-solid-primary" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                                </li>
+                            {% endif %}
+
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if num >= page_obj.number|add:-2 and num <= page_obj.number|add:2 %}
+                                    <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                                        <a class="btn-default bg-solid-primary" href="?page={{ num }}">{{ num }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="btn-default bg-solid-primary" href="?page={{ page_obj.next_page_number }}">Next</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Optional Styling -->
+<style>
+
+    .list-group-item {
+        background-color: #1c1c1e;
+        border: none;
+    }
+    .pagination-section {
+        margin-top: 15px;
+    }
+    .pagination-section .pagination {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+    .pagination-section .page-item {
+        margin: 0 5px;
+    }
+    .pagination-section .btn-default {
+        color: #ffffff;
+        font-weight: bold;
+        border: 1px solid #ddd;
+        padding: 8px 12px;
+        border-radius: 5px;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .pagination-section .btn-default:hover {
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+    }
+    .pagination-section .page-item.active .btn-default {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+</style>
+{% endblock %}
