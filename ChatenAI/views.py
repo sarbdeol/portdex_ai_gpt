@@ -391,7 +391,7 @@ def product_list(request):
     # Extract distinct categories for the filter dropdown
     categories = list({product.get("category") for product in products if product.get("category")})
 
-    sellers = list({product.get("author").replace('-',' ').title() for product in products if product.get("author")})
+    sellers = list({product.get("author") for product in products if product.get("author")})
 
     context = {
         'products': products_page,
