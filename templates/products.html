@@ -28,28 +28,27 @@
                 <div class="row g-3" id="productContainer"> <!-- Compact spacing with g-3 -->
                     {% if products %}
                         {% for product in products %}
-                            {% if product.images and product.images.0 %}
-                                <div class="col-md-4">
-                                    <div class="card h-100">
-                                        <div class="card-img-container">
-                                            <img src="{{ product.images.0 }}" class="card-img-top img-first" alt="{{ product.title }}">
-                                            <img src="{{ product.images.1 }}" class="card-img-top img-second" alt="{{ product.title }}">
-                                        </div>
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <div class="card-img-container">
+                                        <img src="{{ product.images.0 }}" class="card-img-top img-first" alt="{{ product.title }}">
+                                        <img src="{{ product.images.1 }}" class="card-img-top img-second" alt="{{ product.title }}">
+                                    </div>
+                                    
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ product.title }}</h5>
+                                        <p class="card-text">{{ product.author }}</p>
+                                        <p class="card-text">{{ product.category }}</p>
+                                        <p class="card-text">{{ product.description|truncatewords:20 }}</p>
                                         
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{ product.title }}</h5>
-                                            <p class="card-text">{{ product.author }}</p>
-                                            <p class="card-text">{{ product.description|truncatewords:15 }}</p>
-                                            
-                                            <p class="card-price"><strong>Price:</strong> {{ product.price }}</p>
-                                            <a href="{{ product.url }}" class="btn btn-primary btn-sm" style="background: linear-gradient(94deg, #dd00ac 10.66%, #7130c3 53.03%, #410093 96.34%, rgba(255, 0, 238, 0.26) 191.41%, rgba(255, 59, 212, 0) 191.43%);">View Details</a>
-                                        </div>
-                                        <div class="card-footer">
-                                            <small class="text-muted">Updated: {{ product.last_update }}</small>
-                                        </div>
+                                        <p class="card-price"><strong>Price:</strong> {{ product.price }}</p>
+                                        <a href="{{ product.url }}" class="btn btn-primary btn-sm" style="background: linear-gradient(94deg, #dd00ac 10.66%, #7130c3 53.03%, #410093 96.34%, rgba(255, 0, 238, 0.26) 191.41%, rgba(255, 59, 212, 0) 191.43%);">View Details</a>
+                                    </div>
+                                    <div class="card-footer">
+                                        <small class="text-muted">Updated: {{ product.last_update }}</small>
                                     </div>
                                 </div>
-                            {% endif %}
+                            </div>
                         {% endfor %}
                     {% else %}
                         <p>No products available in this category.</p>
@@ -155,7 +154,8 @@
                             <!-- Loop through authors -->
                             {% for author in authors %}
                             <li class="history-box">
-                                <a href="?author={{ author }}" class="text-decoration-none {% if author == selected_author %}active{% endif %}">
+                                <a href="?author={{ author }}" 
+                                   class="text-decoration-none {% if author == selected_author %}active{% endif %}">
                                     {{ author }}
                                 </a>
                             </li>
@@ -163,6 +163,8 @@
                         </ul>
                     </div>
                 </div>
+                
+                
                 
             </div>
         </div>

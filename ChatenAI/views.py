@@ -373,13 +373,19 @@ def product_list(request):
         products = response.json()  # Assuming the API returns a JSON array of themes/plugins
     else:
         products = []
+    print(request)
+    # Extract distinct categories for the filter dropdown
+    categories = list({product.get("category") for product in products if product.get("category")})
 
+    sellers = list({product.get("author") for product in products if product.get("author")})
+    sellers = sorted(sellers)  # Sort the list alphabetically
     # Filter by category if selected
     selected_category = request.GET.get('category', '')
     if selected_category:
         products = [product for product in products if product.get("category") == selected_category]
     
     selected_author = request.GET.get('author', '')
+    print('selected_author',selected_author)
     if selected_author:
         products = [product for product in products if product.get("author") == selected_author]
 
@@ -388,10 +394,7 @@ def product_list(request):
     page_number = request.GET.get('page')
     products_page = paginator.get_page(page_number)
 
-    # Extract distinct categories for the filter dropdown
-    categories = list({product.get("category") for product in products if product.get("category")})
-
-    sellers = list({product.get("author") for product in products if product.get("author")})
+    
 
     context = {
         'products': products_page,
