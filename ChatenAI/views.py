@@ -76,8 +76,8 @@ def get_rates(coin):
                 cols = row.find_all('td')
                 # Get text from the first two columns
                 if len(cols) >= 2:  # Ensure there are at least two columns
-                    col1 = cols[0].get_text(separator=" ", strip=True).replace("\n", "").strip()
-                    col2 = cols[1].get_text(separator=" ", strip=True).replace("\n", "").strip()
+                    col1 = cols[2].get_text(separator=" ", strip=True).replace("\n", "").strip()
+                    col2 = cols[3].get_text(separator=" ", strip=True).replace("\n", "").strip()
                     data.append([col1, col2])
             
             # Create a pandas DataFrame with the data
