@@ -1,0 +1,164 @@
+{% extends 'layout/layout2.html' %}
+
+{% block content %}
+<div class="rbt-main-content">
+    <h1>Today's Cryptocurrency Prices by Market Cap</h1>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Symbol</th>
+                    <th>Price (USD)</th>
+                    <th>24h Change</th>
+                    <th>1h Change</th>
+                    <th>7d Change</th>
+                    <th>Market Cap (USD)</th>
+                    <th>24h Volume</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for crypto in page_obj %}
+                <tr>
+                    <td>{{ crypto.rank }}</td>
+                    <td>
+                        <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/{{ crypto.id }}.png" 
+                             alt="{{ crypto.name }}" class="logo">
+                        <a href="/coin/{{ crypto.slug }}/{{ crypto.id }}">{{ crypto.name }}</a>
+                    </td>
+                    <td>{{ crypto.symbol }}</td>
+                    <td>
+                        ${{ crypto.price_usd | floatformat:2 }}
+                    </td>
+                    <td>
+                        {{ crypto.percent_change_24h }}%
+                    </td>
+                    <td>
+                        {{ crypto.percent_change_1h }}%
+                    </td>
+                    <td>
+                        {{ crypto.percent_change_7d }}%
+                    </td>
+                    <td>
+                        ${{ crypto.market_cap_usd | floatformat:2 }}
+                    </td>
+                    <td>
+                        ${{ crypto.volume24 | floatformat:2 }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+        <a href="?page=1">First</a>
+        <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span class="current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    /* General Styles */
+    .rbt-main-content {
+        padding: 20px;
+     
+    }
+
+    h1 {
+        font-size: 28px;
+        margin-bottom: 20px;
+        color: #fff;
+    }
+
+    /* Table Container */
+  
+
+    /* Table Styles */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #2b2b2b;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #444;
+        color: #ddd;
+    }
+
+    th {
+        background-color: #333;
+        color: #fff;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+        background-color: #333;
+    }
+
+    tr:nth-child(odd) {
+        background-color: #444;
+    }
+
+    tr:hover {
+        background-color: #555;
+    }
+
+    .logo {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+    }
+
+    .crypto-link {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .crypto-link:hover {
+        text-decoration: underline;
+    }
+
+    /* Pagination Styles */
+    .pagination {
+        margin: 20px 0;
+        text-align: center;
+    }
+
+    .pagination a {
+        margin: 0 5px;
+        padding: 8px 16px;
+        text-decoration: none;
+        background-color: #444;
+        color: #ddd;
+        border-radius: 5px;
+        border: 1px solid #555;
+    }
+
+    .pagination a:hover {
+        background-color: #555;
+    }
+
+    .pagination .current {
+        font-weight: bold;
+        color: #fff;
+        background-color: #007bff;
+        padding: 8px 16px;
+    }
+</style>
+{% endblock %}

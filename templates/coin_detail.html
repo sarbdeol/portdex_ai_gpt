@@ -1,0 +1,458 @@
+{% extends 'layout/layout2.html' %}
+
+{% block content %}
+<style>
+ 
+
+    h1, h3 {
+        color: white; /* Match heading colors with the dark theme */
+    }
+
+    /* Header Section */
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .header img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .header h1 {
+        font-size: 28px;
+        display: flex;
+        align-items: center;
+    }
+
+    .header h1 span {
+        margin-left: 10px;
+        font-size: 16px;
+        color: #aaa; /* Subtle contrast for secondary text */
+    }
+
+    .header p {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0;
+        color: #4caf50; /* Green for positive values */
+    }
+
+    /* Stats Section */
+    /* General Styles */
+    .section {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: #1e1e1e; /* Dark background */
+        border-radius: 10px; /* Rounded corners */
+    }
+
+    /* Stats Container */
+    .stats-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap; /* Ensure responsive layout */
+    }
+
+    .stat-card {
+        background-color: #2b2b2b; /* Dark background for the cards */
+        color: #fff; /* White text for readability */
+        padding: 20px;
+        border-radius: 10px; /* Rounded corners for the cards */
+        width: 30%; /* Card width */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow for depth */
+        text-align: center; /* Center align text inside the cards */
+    }
+
+    .stat-card h4 {
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: #ccc; /* Light grey for headings */
+    }
+
+    .stat-card p {
+        font-size: 22px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .stat-card p span {
+        font-size: 18px;
+        color: #888; /* Lighter color for symbol */
+    }
+
+    /* Media Query for smaller screens */
+    @media (max-width: 768px) {
+        .stat-card {
+            width: 48%; /* Adjust card width for smaller screens */
+        }
+    }
+
+    @media (max-width: 480px) {
+        .stat-card {
+            width: 100%; /* Full width for extra small screens */
+        }
+    }
+
+
+    /* Trending Coins Section */
+    .trending-coins .item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .trending-coins .info {
+        display: flex;
+        align-items: center;
+    }
+
+    .trending-coins .logo {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+    }
+
+    .trending-coins .price {
+        color: inherit; /* Match text color */
+    }
+
+    .trending-coins .price.green {
+        color: #4caf50; /* Green for positive prices */
+    }
+
+    .trending-coins .price.red {
+        color: #f44336; /* Red for negative prices */
+    }
+
+    /* Table Styling */
+    .section {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: #1e1e1e; /* Dark background */
+        border-radius: 10px;
+        overflow: hidden; /* Prevent any overflow outside the section */
+    }
+    
+    /* Table Container for Horizontal Scroll */
+    .table-container {
+        overflow-x: auto; /* Enables horizontal scrolling */
+        -webkit-overflow-scrolling: touch; /* For smooth scrolling on touch devices */
+        margin-top: 20px;
+        border-radius: 10px;
+    }
+    
+    /* Table Styling */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 1000px; /* Ensures the table doesn't shrink too much */
+        background-color: #2b2b2b; /* Dark background for table */
+        border-radius: 10px; /* Rounded corners for the table */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow for depth */
+    }
+    
+    th, td {
+        padding: 15px;
+        text-align: left;
+        color: #ddd; /* Light text color */
+        border: 1px solid #444; /* Light borders for dark theme */
+    }
+    
+    /* Header Styling */
+    th {
+        background-color: #333; /* Darker background for header */
+        color: #fff; /* White text for headers */
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    /* Row Styling */
+    tr:nth-child(even) {
+        background-color: #222; /* Dark background for even rows */
+    }
+    
+    tr:nth-child(odd) {
+        background-color: #2b2b2b; /* Slightly lighter for odd rows */
+    }
+    
+    /* Hover Effect */
+    tr:hover {
+        background-color: #444; /* Dark hover effect for rows */
+    }
+    
+    /* Link Styling */
+    a {
+        color: #58a6ff; /* Light blue for links */
+        text-decoration: none;
+    }
+    
+    a:hover {
+        text-decoration: underline;
+    }
+    
+    /* Volume % Column Styling */
+    td:nth-child(8) {
+        font-weight: bold;
+        color: #ffbf00; /* Yellowish color for volume % */
+    }
+    
+    /* Confidence Column Styling */
+    td:last-child {
+        font-weight: bold;
+        color: #34d399; /* Green for High, red for Low */
+    }
+    
+    /* Responsive Table */
+    @media (max-width: 768px) {
+        th, td {
+            padding: 10px;
+            font-size: 14px;
+        }
+    }
+
+
+    /* Graph Section */
+    .chart-container {
+        position: relative;
+        height: 400px;
+        width: 100%;
+        margin-top: 30px;
+    }
+
+    canvas {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* News Section */
+    .news .item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .news .item img {
+        width: 60px;
+        height: 60px;
+        border-radius: 5px;
+        margin-right: 10px;
+    }
+
+    .news .item a {
+        font-weight: bold;
+        color: #4caf50; /* Green links for consistency */
+        text-decoration: none;
+    }
+
+    .news .item a:hover {
+        text-decoration: underline;
+        color: #66bb6a; /* Lighter green on hover */
+    }
+
+</style>
+
+<div class="rbt-main-content">
+    <!-- Header Section -->
+    <div class="container">
+        <div class="header">
+            <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/{{ coin_data.id }}.png" alt="{{ coin_data.name }}">
+            <h1>{{ coin_data.name }} <span>({{ coin_data.symbol }})</span></h1>
+            <p>${{ coin_data.marketPairs.0.price|floatformat:2 }}</p>
+
+
+        </div>
+
+        <!-- Stats Section -->
+        <div class="section">
+            <div class="stats-container">
+                <div class="stat-card">
+                    <h4>Market Cap</h4>
+                    <p>${{ stats.marketCapUsd | floatformat:2  }}</p>
+                </div>
+                <div class="stat-card">
+                    <h4>24h Volume</h4>
+                    <p>${{ stats.volumeUsd | floatformat:2  }}</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Circulating Supply</h4>
+                    <p>{{ stats.totalSupply | floatformat:2  }} {{ coin_data.symbol }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trending Coins Section -->
+        <div class="section trending-coins">
+            <h3>Trending Coins</h3>
+            {% for coin in trending_data %}
+            <div class="item">
+                <div class="info">
+                    <img class="logo" src="https://s2.coinmarketcap.com/static/img/coins/64x64/{{ coin.id }}.png" alt="{{ coin.name }}">
+                    <span>{{ coin.name }} ({{ coin.symbol }})</span>
+                </div>
+                <div class="price {% if coin.priceChange.priceChange24h >= 0 %}green{% else %}red{% endif %}">
+                    ${{ coin.priceChange.price | floatformat:6 }}<br>
+                    {{ coin.priceChange.priceChange24h | floatformat:2  }}%
+                </div>
+                
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Chart Section -->
+        <div class="chart-container">
+            <canvas id="coinChart"></canvas>
+        </div>
+
+        <!-- Data Table Section -->
+        <div class="section">
+            <h3>{{ coin_data.name }} Markets</h3>
+            <div class="table-container"> <!-- Added container for scroll -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Exchange</th>
+                            <th>Pair</th>
+                            <th>Price</th>
+                            <th>+2% Depth</th>
+                            <th>-2% Depth</th>
+                            <th>Volume (24h)</th>
+                            <th>Volume %</th>
+                            <th>Confidence</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pair in coin_data.marketPairs %}
+                        <tr>
+                            <td>{{ pair.rank }}</td>
+                            <td>{{ pair.exchangeName }}</td>
+                            <td><a href="{{ pair.marketUrl }}" target="_blank">{{ pair.marketPair }}</a></td>
+                            <td>${{ pair.price | floatformat:2 }}</td>
+                            <td>${{ pair.depthUsdPositiveTwo | floatformat:2 }}</td>
+                            <td>${{ pair.depthUsdNegativeTwo | floatformat:2 }}</td>
+                            <td>${{ pair.volumeUsd | floatformat:2 }}</td>
+                            <td>{{ pair.volumePercent | floatformat:2 }}%</td>
+                            <td>
+                                {% if pair.isVerified %}
+                                    High
+                                {% else %}
+                                    Low
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        
+
+            <!-- News Section -->
+        <div class="section news">
+            <h3>Latest News</h3>
+            {% for news in news_data %}
+            <div class="item">
+                <img src="{{ news.cover }}" alt="News Image">
+                <div>
+                    <a href="{{ news.meta.sourceUrl }}" target="_blank">{{ news.meta.title }}</a>
+                    <!-- Raw published date (hidden) -->
+                    <p class="published-raw" style="display:none;">{{ news.meta.createdAt }}</p>
+                    <!-- Visible published date -->
+                    <p class="published-readable">Loading...</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Function to calculate "time ago"
+                function timeAgo(dateString) {
+                    const now = new Date();
+                    const past = new Date(dateString); // Parse the date string into a JavaScript Date object
+        
+                    // Check if the date is valid
+                    if (isNaN(past)) {
+                        return 'Invalid date';
+                    }
+        
+                    const diffMs = now - past; // Difference in milliseconds
+                    const seconds = Math.floor(diffMs / 1000); // Convert to seconds
+                    const minutes = Math.floor(seconds / 60); // Convert to minutes
+                    const hours = Math.floor(minutes / 60); // Convert to hours
+                    const days = Math.floor(hours / 24); // Convert to days
+        
+                    // Return the time ago string
+                    if (days > 0) {
+                        return `${days} day${days > 1 ? 's' : ''} ago`;
+                    }
+                    if (hours > 0) {
+                        return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+                    }
+                    if (minutes > 0) {
+                        return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+                    }
+                    return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
+                }
+        
+                // Process each news item
+                document.querySelectorAll('.item').forEach(function(item) {
+                    // Ensure the element with the raw date exists
+                    const rawDateElement = item.querySelector('.published-raw');
+                    const readableDateElement = item.querySelector('.published-readable');
+                    
+                    if (rawDateElement && readableDateElement) {
+                        const rawDate = rawDateElement.textContent.trim(); // Get the raw date and trim any extra spaces
+                        const readableDate = timeAgo(rawDate); // Get the time ago string
+        
+                        // Update the element with the "time ago" value
+                        readableDateElement.textContent = `Published: ${readableDate}`; // Set the time ago string
+                    }
+                });
+            });
+        </script>
+                 
+    <div>
+        
+    <script>
+        // Prepare the data for the chart
+        var ctx = document.getElementById('coinChart').getContext('2d');
+        var coinChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ graph_labels|safe }},
+                datasets: [{
+                    label: 'Volume in USD',
+                    data: {{ graph_values|safe }},
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+
+   
+
+</div>
+
+
+{% endblock %}

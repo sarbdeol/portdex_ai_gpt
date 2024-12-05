@@ -487,3 +487,135 @@ def ai_developers(request):
     page_obj = paginator.get_page(page_number)
     # Pass developers data to the template
     return render(request, 'ai_developers.html', {'developers': developers_data,'chat_id': str(uuid.uuid4()),'page_obj':page_obj})
+
+
+# Function to fetch all coin data from the JSON
+def get_all_coins():
+    url = 'https://s3.coinmarketcap.com/generated/core/crypto/cryptos.json'
+    response = requests.get(url)
+    return response.json()
+
+# Function to fetch prices from CoinLore API
+def get_coin_prices():
+    url = 'https://api.coinlore.net/api/tickers/'
+    response = requests.get(url)
+    return response.json()
+
+def all_coins(request):
+    # Fetch coin data from the JSON
+    data = get_all_coins()
+    cryptos = [dict(zip(data["fields"], value)) for value in data["values"]]
+
+    # Fetch prices from CoinLore API
+    prices_data = get_coin_prices()
+    coin_prices = {coin['symbol'].lower(): coin for coin in prices_data['data']}
+
+    # Merge the prices with the coin data based on the coin symbol
+    for crypto in cryptos:
+        if crypto.get('rank') not in ['', 0,' ']:
+            print(f"Rank: {crypto.get('rank')} - Name: {crypto.get('name')}")
+            coin_symbol = crypto.get('symbol').lower()  # Use symbol instead of name
+            if coin_symbol in coin_prices:
+                crypto['price_usd'] = coin_prices[coin_symbol]['price_usd']
+                crypto['percent_change_24h'] = coin_prices[coin_symbol].get('percent_change_24h', '0.00')  # Handle missing values
+                crypto['percent_change_1h'] = coin_prices[coin_symbol].get('percent_change_1h', '0.00')
+                crypto['percent_change_7d'] = coin_prices[coin_symbol].get('percent_change_7d', '0.00')
+                crypto['market_cap_usd'] = coin_prices[coin_symbol].get('market_cap_usd', '0.00')
+                crypto['volume24'] = coin_prices[coin_symbol].get('volume24', 0)
+            else:
+                # Set to None or default if no price is found
+                crypto['price_usd'] = None
+                crypto['percent_change_24h'] = '0.00'
+                crypto['percent_change_1h'] = '0.00'
+                crypto['percent_change_7d'] = '0.00'
+                crypto['market_cap_usd'] = '0.00'
+                crypto['volume24'] = 0
+        
+        # Convert rank to integer (if it exists) to ensure sorting works correctly
+            crypto['rank'] = int(crypto.get('rank'))  # Ensure 'rank' is an integer
+        
+    # Sort the cryptocurrencies by 'rank' (ascending)
+    filtered_cryptos = [crypto for crypto in cryptos if crypto.get('rank') not in ['0', 0]]
+
+    # Sort the filtered list by 'rank' (ascending)
+    filtered_cryptos.sort(key=lambda x: x['rank'])  # Sorting by 'rank'
+    # Pagination setup
+    paginator = Paginator(filtered_cryptos, 100)  # Show 100 coins per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+
+    # Render the template with paginated data
+    return render(request, 'all_coins.html', {'page_obj': page_obj, 'chat_id': str(uuid.uuid4())})
+
+
+def get_trending_coins():
+    url = "https://api.coinmarketcap.com/data-api/v3/cryptocurrency/spotlight?dataType=1&limit=5&start=1"
+    response = requests.get(url)
+    return response.json()
+
+# API Functions
+def get_coin_details(coin_slug):
+    url = f'https://api.coinmarketcap.com/data-api/v3/cryptocurrency/market-pairs/latest?slug={coin_slug}&start=1&limit=10&category=spot&centerType=all&sort=cmc_rank_advanced&direction=desc&spotUntracked=true'
+    headers = {
+        'accept': 'application/json, text/plain, */*',
+        'user-agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36',
+    }
+    response = requests.get(url, headers=headers)
+    return response.json()
+
+def get_graph_data(crypto_slug, period='1'):
+    url = f'https://api.coinmarketcap.com/nft/v3/nft/chain/total?cryptoSlug={crypto_slug}&period={period}'
+    headers = {
+        'accept': 'application/json, text/plain, */*',
+        'user-agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36',
+    }
+    response = requests.get(url, headers=headers)
+    return response.json()
+
+def get_crypto_news(crypto_id, language='en'):
+    url = f'https://api.coinmarketcap.com/aggr/v3/news/cdp?mode=top&cryptoId={crypto_id}&language={language}'
+    response = requests.get(url)
+    # print(response.json())
+    return response.json()
+
+import time
+def coin_detail(request, coin_slug, crypto_id):
+    # Fetch coin details
+    coin_data = get_coin_details(coin_slug)['data']
+    # print(coin_data)
+    # Fetch trending coins
+    trending_data = get_trending_coins()
+
+    # Fetch graph data
+    graph_response = get_graph_data(coin_slug)
+    graph_records = graph_response["data"]["records"] if graph_response else []
+
+    # Prepare graph data (timePeriod -> readable format, volumeUsd)
+    graph_labels = [
+        time.strftime('%H:%M %p', time.gmtime(int(record["timePeriod"]) / 1000))
+        for record in graph_records
+    ]
+    graph_values = [record["volumeUsd"] for record in graph_records]
+
+    # Fetch cryptocurrency-related news
+    news_data = get_crypto_news(crypto_id)['data']['news']
+    graph_data = graph_response["data"] if graph_response else {}
+    stats = {
+        "marketCapUsd": graph_data.get("marketCapUsd", 0),
+        "volumeUsd": graph_data.get("volumeUsd", 0),
+        "volumeRate": graph_data.get("volumeRate", 0),
+        "totalSupply": 19.79,  # Example value, replace with actual data if available
+        "maxSupply": 21  # Example value, replace with actual data if available
+    }
+    # Render template
+    context = {
+        'coin_data': coin_data,
+        'stats':stats,
+        'trending_data': trending_data['data']['trendingList'],
+        'graph_labels': graph_labels,
+        'graph_values': graph_values,
+        'news_data': news_data,
+        'chat_id': str(uuid.uuid4())
+    }
+    return render(request, 'coin_detail.html', context)
