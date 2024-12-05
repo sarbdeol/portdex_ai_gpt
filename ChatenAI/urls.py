@@ -32,7 +32,7 @@ urlpatterns = [
     path('ai-repositories/', views.ai_repositories, name='ai-repositories'),
     path('ai-developers/', views.ai_developers, name='ai-developers'),
 
-    path('crypto-currencies/', views.all_coins, name='Cryptocurrency'),
+    path('crypto-currencies/', views.all_coins, name='cryptocurrency'),
     path('currencies/<str:coin_slug>/<int:crypto_id>/', views.coin_detail, name='coin_detail'),
 
 
