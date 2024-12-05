@@ -513,7 +513,7 @@ def all_coins(request):
     # Merge the prices with the coin data based on the coin symbol
     for crypto in cryptos:
         if crypto.get('rank') not in ['', 0,' ']:
-            print(f"Rank: {crypto.get('rank')} - Name: {crypto.get('name')}")
+            # print(f"Rank: {crypto.get('rank')} - Name: {crypto.get('name')}")
             coin_symbol = crypto.get('symbol').lower()  # Use symbol instead of name
             if coin_symbol in coin_prices:
                 crypto['price_usd'] = coin_prices[coin_symbol]['price_usd']

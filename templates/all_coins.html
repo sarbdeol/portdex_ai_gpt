@@ -25,7 +25,7 @@
                     <td>
                         <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/{{ crypto.id }}.png" 
                              alt="{{ crypto.name }}" class="logo">
-                        <a href="/coin/{{ crypto.slug }}/{{ crypto.id }}">{{ crypto.name }}</a>
+                        <a href="/currencies/{{ crypto.slug }}/{{ crypto.id }}">{{ crypto.name }}</a>
                     </td>
                     <td>{{ crypto.symbol }}</td>
                     <td>
@@ -88,7 +88,7 @@
     table {
         width: 100%;
         border-collapse: collapse;
-        background-color: #2b2b2b;
+   
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
@@ -96,34 +96,30 @@
     th, td {
         padding: 12px;
         text-align: left;
-        border: 1px solid #444;
+        border: 1px solid grey;
         color: #ddd;
     }
 
     th {
-        background-color: #333;
+        background-color: black;
         color: #fff;
         text-transform: uppercase;
         font-weight: bold;
     }
 
     tr:nth-child(even) {
-        background-color: #333;
+        background-color: black;
     }
 
     tr:nth-child(odd) {
-        background-color: #444;
+        background-color: black;
     }
 
     tr:hover {
         background-color: #555;
     }
 
-    .logo {
-        width: 20px;
-        height: 20px;
-        margin-right: 10px;
-    }
+  
 
     .crypto-link {
         color: #007bff;
@@ -144,7 +140,7 @@
         margin: 0 5px;
         padding: 8px 16px;
         text-decoration: none;
-        background-color: #444;
+        background-color: grey;
         color: #ddd;
         border-radius: 5px;
         border: 1px solid #555;
