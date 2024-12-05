@@ -33,7 +33,7 @@ urlpatterns = [
     path('ai-developers/', views.ai_developers, name='ai-developers'),
 
     path('crypto-currencies/', views.all_coins, name='cryptocurrency'),
-    path('currencies/<str:coin_slug>/<int:crypto_id>/', views.coin_detail, name='coin_detail'),
+    path('crypto-currencies/<str:coin_slug>/<int:crypto_id>/', views.coin_detail, name='coin_detail'),
 
 
     # Dashboard routes
