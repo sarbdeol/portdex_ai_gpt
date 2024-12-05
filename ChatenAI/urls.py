@@ -32,8 +32,8 @@ urlpatterns = [
     path('ai-repositories/', views.ai_repositories, name='ai-repositories'),
     path('ai-developers/', views.ai_developers, name='ai-developers'),
 
-    path('coins/', views.all_coins, name='all_coins'),
-    path('coin/<str:coin_slug>/<int:crypto_id>/', views.coin_detail, name='coin_detail'),
+    path('crypto-currencies/', views.all_coins, name='Cryptocurrency'),
+    path('currencies/<str:coin_slug>/<int:crypto_id>/', views.coin_detail, name='coin_detail'),
 
 
     # Dashboard routes
