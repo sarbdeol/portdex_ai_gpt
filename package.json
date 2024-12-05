@@ -1,7 +1,7 @@
 {
   "name": "PortdexAI",
   "version": "1.0.0",
-  "description": "PortdexAI - AI SaaS Website + Dashboard Django UI Kit",
+  "description": "PortdexAI",
   "author": "PixcelsThemes",
   "scripts": {
     "dev": "sass --watch static/scss/style.scss:static/css/style.css",
