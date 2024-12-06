@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+{% extends './layout/layout1.html' %}
+
+{% block content %}
+<div class="rbt-main-content mr--0">
+    <div id="content" class="site-content">
+        <!-- Main Section -->
+        <section id="primary" class="content-area">
+            <main id="main" class="site-main">
+                <article id="post-15" class="post-15 page type-page status-publish hentry entry">
+                    <header class="entry-header responsive-max-width">
+                        <h1 class="entry-title">Services</h1>
+                    </header>
+                    <div class="entry-content">
+                        <p class="has-text-align-center">
+                            We provide a comprehensive service for people in need of legal advice. Whatever legal service you require, we have a specialist solicitor or lawyer who can help. Law Lane Solicitors has an Accredited Quality mark by the Law Society in Immigration Law, Criminal Law, and Property Conveyancing, as well as the Law Society “Lexcel” Quality Accreditation.
+                        </p>
+                        <h4 class="wp-block-heading has-text-align-center">We have solicitors offering legal advice on:</h4>
+                        <!-- Services Grid -->
+                        <div class="wp-block-columns is-layout-flex wp-container-15 wp-block-columns-is-layout-flex">
+                            <!-- Service 1 -->
+                           
+                            
+                            {% for service in services %}
+                                <div class="wp-block-column is-layout-flow">
+                                    <div class="wp-block-cover is-light" style="min-height:200px">
+                                        <img class="wp-block-cover__image-background" src="{{ service.image }}" alt="{{ service.name }}">
+                                        <div class="wp-block-cover__inner-container">
+                                            <p class="service-title">
+                                                <a href="{{ service.link }}">{{ service.name }}</a>
+                                            </p>
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            
+                            <!-- Add more services as needed -->
+                        </div>
+                        <div style="height:100px" aria-hidden="true" class="wp-block-spacer"></div>
+                    </div><!-- .entry-content -->
+                </article><!-- #post-15 -->
+            </main><!-- #main -->
+        </section><!-- #primary -->
+    </div>
+</div>
+<style>
+    
+    .rbt-main-content {
+        text-align: center;
+    }
+    
+    .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    h1, h4 {
+        text-align: center;
+        color: white;
+    }
+    
+    p {
+        color: white;
+        font-size: 2rem;
+        text-align: center;
+    }
+    
+    /* Service Section */
+    .wp-block-columns {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+    
+    .wp-block-column {
+        max-width: 25%;
+    }
+    
+    .wp-block-cover {
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .wp-block-cover img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    
+    .wp-block-cover__inner-container {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        text-align: center;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    
+    .wp-block-cover__inner-container a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    
+    .wp-block-cover__inner-container a:hover {
+        text-decoration: underline;
+    }
+    
+</style>
+{% endblock content %}

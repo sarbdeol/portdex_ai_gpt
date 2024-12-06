@@ -27,6 +27,7 @@ urlpatterns = [
 
     path('', views.index, name = 'index'),
     path('dashboard', views.dashboard, name = 'dashboard'),
+    path('service', views.service, name = 'services'),
     path('products', views.product_list, name = 'products'),
     path('developers/', views.freelancers_list, name='developers'),
     path('ai-repositories/', views.ai_repositories, name='ai-repositories'),

@@ -619,3 +619,72 @@ def coin_detail(request, coin_slug, crypto_id):
         'chat_id': str(uuid.uuid4())
     }
     return render(request, 'coin_detail.html', context)
+
+
+
+def service(request):
+    if 'chat_id' not in request.session:
+        request.session['chat_id'] = str(uuid.uuid4())
+    services = [
+    {
+        "name": "Conveyancing",
+        "link": "http://lawlanesolicitors.co.uk/conveyancing/",
+        "image": "https://lawlanesolicitors520258936.files.wordpress.com/2022/05/pexels-photo-1642125.jpeg"
+    },
+    {
+        "name": "Housing Law",
+        "link": "http://lawlanesolicitors.co.uk/housing-law/",
+        "image": "http://lawlanesolicitors.co.uk/wp-content/uploads/2022/04/pexels-photo-2253934.jpeg"
+    },
+    {
+        "name": "Medical Negligence",
+        "link": "http://lawlanesolicitors.co.uk/medical-negligence/",
+        "image": "https://lawlanesolicitors520258936.files.wordpress.com/2022/03/pexels-photo-8670190.jpeg"
+    },
+    {
+        "name": "Corporate Law",
+        "link": "http://lawlanesolicitors.co.uk/corporate-law/",
+        "image": "https://lawlanesolicitors520258936.files.wordpress.com/2022/03/pexels-photo-7876299.jpeg"
+    },
+    {
+        "name": "Civil Litigation",
+        "link": "http://lawlanesolicitors.co.uk/civil-litigation/",
+        "image": "https://lawlanesolicitors520258936.files.wordpress.com/2022/03/pexels-photo-8112172-2.jpeg"
+    },
+    {
+        "name": "Immigration & Asylum",
+        "link": "http://lawlanesolicitors.co.uk/immigration-law/",
+        "image": "https://lawlanesolicitors520258936.files.wordpress.com/2022/03/pexels-photo-8112107.jpeg"
+    },
+    {
+        "name": "Personal Injury",
+        "link": "http://lawlanesolicitors.co.uk/personal-injury/",
+        "image": "https://lawlanesolicitors520258936.files.wordpress.com/2022/03/pexels-photo-263402.jpeg"
+    },
+    {
+        "name": "Professional Negligence",
+        "link": "http://lawlanesolicitors.co.uk/professional-negligence/",
+        "image": "https://lawlanesolicitors520258936.files.wordpress.com/2022/03/pexels-photo-7841490.jpeg"
+    },
+    {
+        "name": "Family Law",
+        "link": "http://lawlanesolicitors.co.uk/family-law/",
+        "image": "https://lawlanesolicitors520258936.files.wordpress.com/2022/03/pexels-photo-1682497.jpeg"
+    },
+    {
+        "name": "Insolvency & Bankruptcy",
+        "link": "http://lawlanesolicitors.co.uk/insolvency-bankruptcy/",
+        "image": "https://lawlanesolicitors520258936.files.wordpress.com/2022/03/pexels-photo-7247407.jpeg"
+    },
+    {
+        "name": "Private Client Law (Wills & Probate)",
+        "link": "http://lawlanesolicitors.co.uk/wills-probate/",
+        "image": "https://lawlanesolicitors520258936.files.wordpress.com/2022/03/pexels-photo-7876088-1.jpeg"
+    }
+    ]
+   
+    return render(request, 'service.html', {
+        'chat_id': request.session['chat_id'],
+        'headTitle':'Services',
+        'services': services
+    })
