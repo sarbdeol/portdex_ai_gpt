@@ -721,9 +721,12 @@ def service_detail(request, service_name):
 
 
 def get_profiles_by_service(service_name):
-    """Filter profiles by practice areas matching any word in the service name."""
+    """
+    Filter profiles by practice areas matching any word in the service name.
+    """
     matching_profiles = []
     service_words = service_name.lower().split()  # Split service_name into words
+
     for profile in PROFILES_DATA:
         for area in profile['practice_areas']:
             area_words = area.lower().split()  # Split practice area into words
@@ -731,6 +734,9 @@ def get_profiles_by_service(service_name):
             if any(word in area_words for word in service_words):
                 matching_profiles.append(profile)
                 break  # Stop checking other areas for this profile
+
+    return matching_profiles
+
     return matching_profiles
 
 def get_profile_by_name(slug_name):
