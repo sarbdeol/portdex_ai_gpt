@@ -29,10 +29,14 @@
         <div class="profiles-grid">
             {% for profile in profiles %}
                 <div class="profile-card">
-                    <a href="/person/{{ profile.name|slugify }}/">
-                        <img src="{{ profile.image }}" alt="{{ profile.name }}">
-                        <h3>{{ profile.name }}</h3>
-                    </a>
+                    <img src="{{ profile.image }}" alt="{{ profile.name }}">
+                    <h3>{{ profile.name }}</h3>
+                    <div class="profile-actions">
+                        <button onclick="window.location.href='#'">Contact</button>
+                        <button onclick="window.location.href='#'">Chat</button>
+                        <button onclick="window.location.href='#'">Book</button>
+                        <button onclick="window.location.href='#'">Pay</button>
+                    </div>
                 </div>
             {% endfor %}
         </div>
@@ -83,17 +87,6 @@
         margin-bottom: 10px;
     }
     /* Team Section Styling */
-    .profiles {
-        margin-top: 40px;
-    }
-
-    .profiles h2 {
-        text-align: center;
-        font-size: 24px;
-        color: #2f4f4f;
-        margin-bottom: 20px;
-    }
-
     .profiles-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -103,11 +96,12 @@
 
     .profile-card {
         text-align: center;
-        transition: transform 0.3s ease;
-    }
-
-    .profile-card:hover {
-        transform: scale(1.05);
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 200px;
     }
 
     .profile-card img {
@@ -116,13 +110,35 @@
         border-radius: 50%;
         object-fit: cover;
         margin-bottom: 10px;
-        border: 2px solid #ddd;
     }
 
     .profile-card h3 {
-        font-size: 16px;
-        color: #2f4f4f;
-        margin-top: 10px;
+        font-size: 18px;
+        margin: 10px 0;
+        color: #333;
+    }
+
+    .profile-actions {
+        margin-top: 15px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        justify-content: center;
+    }
+
+    .profile-actions button {
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s;
+    }
+
+    .profile-actions button:hover {
+        background-color: #0056b3;
     }
 </style>
 {% endblock content %}
