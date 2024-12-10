@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+{% extends './layout/layout1.html' %}
+
+{% block content %}
+<div class="rbt-main-content mr--0">
+
+    
+    <!-- Team Profiles Section -->
+    <div class="profiles">
+        <h2>Our Team</h2>
+        <div class="profiles-grid">
+            {% for profile in profiles %}
+                <div class="profile-card">
+                    <a href="/person/{{ profile.name|slugify }}/">
+                        <img src="{{ profile.image }}" alt="{{ profile.name }}">
+                        <h3>{{ profile.name }}</h3>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        
+    </div>
+
+</div>
+<style>
+    
+    /* Team Section Styling */
+    .profiles {
+        margin-top: 40px;
+    }
+
+    .profiles h2 {
+        text-align: center;
+        font-size: 24px;
+        color: White;
+        margin-bottom: 20px;
+    }
+
+    .profiles-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        justify-items: center;
+    }
+
+    .profile-card {
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+    .profile-card:hover {
+        transform: scale(1.05);
+    }
+
+    .profile-card img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 10px;
+        border: 2px solid #ddd;
+    }
+
+    .profile-card h3 {
+        font-size: 16px;
+        color: #2f4f4f;
+        margin-top: 10px;
+    }
+</style>
+{% endblock content %}

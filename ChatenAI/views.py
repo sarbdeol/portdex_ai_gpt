@@ -688,3 +688,76 @@ def service(request):
         'headTitle':'Services',
         'services': services
     })
+
+
+
+
+from django.http import Http404
+
+# Load JSON Data (from file or in-memory)
+with open('services.json', 'r') as file:
+    SERVICES_DATA = json.load(file)
+# Load Profiles JSON
+with open('profiles.json', 'r') as profiles_file:
+    PROFILES_DATA = json.load(profiles_file)
+def get_service_data(service_name):
+    """Retrieve service details by title from JSON data."""
+    for service in SERVICES_DATA:
+        if service['mainTitle'] == service_name:
+            return service
+    return None
+
+def service_detail(request, service_name):
+    # Get service details from JSON
+    if 'chat_id' not in request.session:
+        request.session['chat_id'] = str(uuid.uuid4())
+    service = get_service_data(service_name)
+    if not service:
+        raise Http404(f"Service '{service_name}' not found.")
+    # Get matching profiles
+    print(service_name)
+    profiles = get_profiles_by_service(service_name)
+    return render(request, 'service_detail.html', {'service': service,'chat_id': str(uuid.uuid4()),'profiles': profiles})
+
+
+def get_profiles_by_service(service_name):
+    """Filter profiles by practice areas matching any word in the service name."""
+    matching_profiles = []
+    service_words = service_name.lower().split()  # Split service_name into words
+    for profile in PROFILES_DATA:
+        for area in profile['practice_areas']:
+            area_words = area.lower().split()  # Split practice area into words
+            # Check if any word in service_words matches any word in area_words
+            if any(word in area_words for word in service_words):
+                matching_profiles.append(profile)
+                break  # Stop checking other areas for this profile
+    return matching_profiles
+
+def get_profile_by_name(slug_name):
+    """Retrieve a profile by slugified name."""
+    for profile in PROFILES_DATA:
+        print(slug_name)
+        if slug_name == profile['name'].lower().replace(" ", "-"):
+            return profile
+    return None
+
+def profile_detail(request, profile_name):
+    if 'chat_id' not in request.session:
+        request.session['chat_id'] = str(uuid.uuid4())
+    profile = get_profile_by_name(profile_name)
+    if not profile:
+        raise Http404("Profile not found")
+    
+    return render(request, 'profile_detail.html', {'profile': profile,'chat_id': str(uuid.uuid4()),})
+
+
+
+
+def teams(request):
+    if 'chat_id' not in request.session:
+        request.session['chat_id'] = str(uuid.uuid4())
+    return render(request, 'our_teams.html', {
+        'chat_id': request.session['chat_id'],
+        'headTitle':'Profiles',
+        'profiles': PROFILES_DATA
+    })

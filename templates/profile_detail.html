@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+{% extends './layout/layout1.html' %}
+
+{% block content %}
+<div class="rbt-main-content mr--0">
+    <style>
+      
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: white;
+            margin-bottom: 20px;
+        }
+        h3 {
+            font-size: 16px;
+            color: #d1d1d1;
+            margin-bottom: 20px;
+        }
+
+        .profile-image {
+            max-width: 300px;
+            max-height: 300px;
+            margin: 0 auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .details {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .details h3 {
+            font-size: 20px;
+            color: #2f4f4f;
+            margin-bottom: 10px;
+        }
+
+        .details p {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .details p strong {
+            font-weight: bold;
+        }
+
+        ul {
+            list-style-type: disc;
+            margin: 10px 0 0 20px;
+            padding: 0;
+        }
+
+        ul li {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .contact {
+            margin-top: 20px;
+        }
+
+        .contact p {
+            font-size: 16px;
+        }
+
+        .contact a {
+            color: #007BFF;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .contact a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    <div class="container">
+        <!-- Name -->
+        <h1>{{ profile.name }}</h1>
+
+        <!-- Image -->
+        <img src="{{ profile.image }}" alt="{{ profile.name }}" class="profile-image">
+
+        <!-- Details -->
+        <div class="details">
+            <h3>Contact:</h3>
+            <p><strong>Email:</strong> <a href="mailto:{{ profile.email }}">{{ profile.email }}</a></p>
+
+            <p><strong>Designation:</strong> {{ profile.designation }}</p>
+
+            <p><strong>Languages:</strong> {{ profile.languages }}</p>
+
+            <h3>Practice Areas:</h3>
+            <ul>
+                {% for area in profile.practice_areas %}
+                    <li>{{ area }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+

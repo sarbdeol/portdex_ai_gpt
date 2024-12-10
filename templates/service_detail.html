@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+{% extends './layout/layout1.html' %}
+
+{% block content %}
+<div class="rbt-main-content mr--0">
+
+    <div class="container">
+        <h1>{{ service.mainTitle }}</h1>
+
+        <div>
+            {% for item in service.content %}
+                {% if item.type == "heading" %}
+                    <h4>{{ item.content }}</h4>
+                {% elif item.type == "paragraph" %}
+                    <p>{{ item.content }}</p>
+                {% elif item.type == "list" %}
+                    <ul>
+                        {% for list_item in item.content %}
+                            <li>{{ list_item }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <!-- Team Profiles Section -->
+    <div class="profiles">
+        <h2>Team Involved</h2>
+        <div class="profiles-grid">
+            {% for profile in profiles %}
+                <div class="profile-card">
+                    <a href="/person/{{ profile.name|slugify }}/">
+                        <img src="{{ profile.image }}" alt="{{ profile.name }}">
+                        <h3>{{ profile.name }}</h3>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        
+    </div>
+
+</div>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+    }
+
+  
+
+    h1  {
+        text-align: center;
+        color: #ffffff; /* White for main headings */
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+    h4 {
+        text-align: center;
+        color: #ffffff; /* White for main headings */
+        margin-bottom: 20px;
+    }
+
+    p {
+        text-align: center;
+        font-size: 18px;
+        color: #d1d1d1; /* Lighter gray for paragraphs */
+        margin: 15px 0;
+    }
+
+    ul {
+        list-style-type: disc;
+        margin: 20px auto;
+        padding-left: 20px;
+        max-width: 600px;
+        color: #e1e1e1; /* Slightly brighter gray for lists */
+    }
+
+    ul li {
+        font-size: 18px;
+        color: #e1e1e1; /* Same color as the list */
+        margin-bottom: 10px;
+    }
+    /* Team Section Styling */
+    .profiles {
+        margin-top: 40px;
+    }
+
+    .profiles h2 {
+        text-align: center;
+        font-size: 24px;
+        color: #2f4f4f;
+        margin-bottom: 20px;
+    }
+
+    .profiles-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        justify-items: center;
+    }
+
+    .profile-card {
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+    .profile-card:hover {
+        transform: scale(1.05);
+    }
+
+    .profile-card img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 10px;
+        border: 2px solid #ddd;
+    }
+
+    .profile-card h3 {
+        font-size: 16px;
+        color: #2f4f4f;
+        margin-top: 10px;
+    }
+</style>
+{% endblock content %}

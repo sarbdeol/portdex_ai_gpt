@@ -28,10 +28,13 @@ urlpatterns = [
     path('', views.index, name = 'index'),
     path('dashboard', views.dashboard, name = 'dashboard'),
     path('service', views.service, name = 'services'),
+    path('teams', views.teams, name = 'teams'),
+    path('services/<str:service_name>/', views.service_detail, name='service_detail'),
     path('products', views.product_list, name = 'products'),
     path('developers/', views.freelancers_list, name='developers'),
     path('ai-repositories/', views.ai_repositories, name='ai-repositories'),
     path('ai-developers/', views.ai_developers, name='ai-developers'),
+    path('person/<slug:profile_name>/', views.profile_detail, name='profile_detail'),
 
     path('crypto-currencies/', views.all_coins, name='cryptocurrency'),
     path('crypto-currencies/<str:coin_slug>/<int:crypto_id>/', views.coin_detail, name='coin_detail'),
