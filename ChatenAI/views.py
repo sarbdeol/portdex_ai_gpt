@@ -719,25 +719,26 @@ def service_detail(request, service_name):
     profiles = get_profiles_by_service(service_name)
     return render(request, 'service_detail.html', {'service': service,'chat_id': str(uuid.uuid4()),'profiles': profiles})
 
-
 def get_profiles_by_service(service_name):
     """
-    Filter profiles by practice areas matching any word in the service name.
+    Filter profiles by matching either the full service name or the first word of the service name
+    with any practice area.
     """
     matching_profiles = []
     service_words = service_name.lower().split()  # Split service_name into words
+    first_word = service_words[0]  # Get the first word of the service name
+    full_service_name = service_name.lower()  # Convert the full service name to lowercase
 
     for profile in PROFILES_DATA:
         for area in profile['practice_areas']:
-            area_words = area.lower().split()  # Split practice area into words
-            # Check if any word in service_words matches any word in area_words
-            if any(word in area_words for word in service_words):
+            # Check for full service name or first word match
+            if area.lower() == full_service_name or area.lower().startswith(first_word):
                 matching_profiles.append(profile)
                 break  # Stop checking other areas for this profile
 
     return matching_profiles
 
-    return matching_profiles
+
 
 def get_profile_by_name(slug_name):
     """Retrieve a profile by slugified name."""
